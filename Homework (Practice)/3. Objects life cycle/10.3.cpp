@@ -46,6 +46,11 @@ public:
 		story = new HistoryEntry[n];
 	}
 
+	~BrowserHistory()
+	{
+		delete[]story;
+	}
+
 	void add()
 	{
 		if (count == n)
