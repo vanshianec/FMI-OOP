@@ -4,16 +4,8 @@
 #include<iostream>
 #include<cstring>
 
-enum class Suit
-{
-	CLUBS, DIAMONDS, HEARTS, SPADES
-};
-
-enum class Rank
-{
-	TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT,
-	NINE, TEN, JACK, QUEEN, KING, ACE
-};
+#include "Suit.h"
+#include "Rank.h"
 
 class Card
 {

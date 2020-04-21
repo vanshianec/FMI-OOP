@@ -116,7 +116,7 @@ double Deck::probabilityToWin(const size_t currentPoints) const
 
 	for (size_t i = drawnCards; i < deckSize; i++)
 	{
-		if (requiredPoints == 1 && cards[i].getRank() == Rank::ACE)
+		if (requiredPoints == 1 && cards[i].getRank() == Rank::Ace)
 		{
 			occurences++;
 		}

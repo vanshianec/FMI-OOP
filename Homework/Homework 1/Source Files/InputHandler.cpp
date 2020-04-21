@@ -159,6 +159,8 @@ bool InputHandler::isDeckInputValid(const char* input, const size_t len)
 		}
 		index++;
 	}
+
+	return true;
 }
 
 size_t InputHandler::spacesCount(const char* name, const size_t len)

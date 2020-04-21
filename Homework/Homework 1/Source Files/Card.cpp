@@ -3,7 +3,7 @@
 
 #include "Card.h"
 
-Card::Card() : suit(Suit::CLUBS), rank(Rank::ACE)
+Card::Card() : suit(Suit::Clubs), rank(Rank::Ace)
 {
 	serialNumber[0] = '\0';
 }
@@ -44,33 +44,35 @@ size_t Card::getPoints() const
 {
 	switch (rank)
 	{
-	case Rank::TWO:
+	case Rank::Two:
 		return 2;
-	case Rank::THREE:
+	case Rank::Three:
 		return 3;
-	case Rank::FOUR:
+	case Rank::Four:
 		return 4;
-	case Rank::FIVE:
+	case Rank::Five:
 		return 5;
-	case Rank::SIX:
+	case Rank::Six:
 		return 6;
-	case Rank::SEVEN:
+	case Rank::Seven:
 		return 7;
-	case Rank::EIGHT:
+	case Rank::Eight:
 		return 8;
-	case Rank::NINE:
+	case Rank::Nine:
 		return 9;
-	case Rank::TEN:
+	case Rank::Ten:
 		return 10;
-	case Rank::JACK:
+	case Rank::Jack:
 		return 10;
-	case Rank::QUEEN:
+	case Rank::Queen:
 		return 10;
-	case Rank::KING:
+	case Rank::King:
 		return 10;
-	case Rank::ACE:
+	case Rank::Ace:
 		return 11;
 	}
+
+	return -1;
 }
 
 void Card::copySerialNumber(const char* _serialNumber)
@@ -88,48 +90,52 @@ const char* suitToStr(Suit s)
 {
 	switch (s)
 	{
-	case Suit::CLUBS:
+	case Suit::Clubs:
 		return "clubs";
-	case Suit::DIAMONDS:
+	case Suit::Diamonds:
 		return "diamonds";
-	case Suit::HEARTS:
+	case Suit::Hearts:
 		return "hearts";
-	case Suit::SPADES:
+	case Suit::Spades:
 		return "spades";
 	}
+
+	return "";
 }
 
 const char* rankToStr(Rank r)
 {
 	switch (r)
 	{
-	case Rank::TWO:
+	case Rank::Two:
 		return "2";
-	case Rank::THREE:
+	case Rank::Three:
 		return "3";
-	case Rank::FOUR:
+	case Rank::Four:
 		return "4";
-	case Rank::FIVE:
+	case Rank::Five:
 		return "5";
-	case Rank::SIX:
+	case Rank::Six:
 		return "6";
-	case Rank::SEVEN:
+	case Rank::Seven:
 		return "7";
-	case Rank::EIGHT:
+	case Rank::Eight:
 		return "8";
-	case Rank::NINE:
+	case Rank::Nine:
 		return "9";
-	case Rank::TEN:
+	case Rank::Ten:
 		return "10";
-	case Rank::JACK:
+	case Rank::Jack:
 		return "Jack";
-	case Rank::QUEEN:
+	case Rank::Queen:
 		return "Queen";
-	case Rank::KING:
+	case Rank::King:
 		return "King";
-	case Rank::ACE:
+	case Rank::Ace:
 		return "Ace";
 	}
+
+	return "";
 }
 
 std::ostream& operator<<(std::ostream& out, const Card& card)

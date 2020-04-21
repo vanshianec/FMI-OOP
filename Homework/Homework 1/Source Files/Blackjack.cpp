@@ -175,7 +175,7 @@ void Blackjack::executeHitCommand(Card* drawnCards, size_t& index, size_t& playe
 {
 	Card card = deck.draw();
 	drawnCards[index++] = card;
-	if (card.getRank() == Rank::ACE && playerPoints >= 11)
+	if (card.getRank() == Rank::Ace && playerPoints >= 11)
 	{
 		player.addPoints(1);
 	}
@@ -198,7 +198,7 @@ void Blackjack::simulateDealerTurn(size_t& dealerPoints)
 	{
 		card = deck.draw();
 		drawnCards[index++] = card;
-		if (card.getRank() == Rank::ACE && dealerPoints >= 11)
+		if (card.getRank() == Rank::Ace && dealerPoints >= 11)
 		{
 			dealerPoints += 1;
 		}

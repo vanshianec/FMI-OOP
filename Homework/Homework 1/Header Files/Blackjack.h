@@ -1,11 +1,11 @@
 #ifndef _BLACKJACK_H
 #define _BLACKJACK_H
 
-#include "Card.h"
-#include "Deck.h"
-#include "Player.h"
-#include "FileUtil.h"
-#include "InputHandler.h"
+#include "Card.cpp"
+#include "Deck.cpp"
+#include "Player.cpp"
+#include "FileUtil.cpp"
+#include "InputHandler.cpp"
 
 class Blackjack
 {

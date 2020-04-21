@@ -1,4 +1,4 @@
-#include "Blackjack.h"
+#include "Blackjack.cpp"
 
 int main()
 {
