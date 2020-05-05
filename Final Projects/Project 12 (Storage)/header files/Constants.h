@@ -13,6 +13,7 @@ const std::string CLOSE_COMMAND = "close";
 const std::string EXIT_COMMAND = "exit";
 const std::string PRINT_COMMAND = "print";
 const std::string ADD_COMMAND = "add";
+const std::string REMOVE_COMMAND = "remove";
 const std::string USER_ALERT_MESSAGE = "Type \"open <path>\" to open a file\n";
 
 const std::string FILE_CLOSED_MESSAGE = "Successfully closed ";

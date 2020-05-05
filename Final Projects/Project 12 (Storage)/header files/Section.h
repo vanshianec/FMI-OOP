@@ -4,14 +4,14 @@
 class Section
 {
 private:
-	size_t id;
-	size_t currentItemsCount;
-	size_t shelfsCount;
+	size_t itemsCount;
 	size_t capacity;
 public:
 	Section();
-	Section(size_t _id, size_t currentItemsCount, size_t _shelfsCount, size_t _capacity);
+	Section(size_t _itemsCount, size_t _capacity);
 	const size_t getCapacity() const;
+	const size_t getItemsCount() const;
+	void addItemsCount(const size_t count);
 };
 
 #endif

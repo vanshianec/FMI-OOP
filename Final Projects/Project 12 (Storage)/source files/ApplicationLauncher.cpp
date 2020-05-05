@@ -37,6 +37,10 @@ void ApplicationLauncher::executeCommand()
 		{
 			addProduct();
 		}
+		else if (command == REMOVE_COMMAND)
+		{
+			removeProduct();
+		}
 	}
 	else if (command == OPEN_COMMAND)
 	{
@@ -79,22 +83,57 @@ void ApplicationLauncher::printAvailableProducts()
 
 void ApplicationLauncher::addProduct()
 {
+	//TODO!!! ADD PRODUCT FACTORY AND VALIDATION AND FIX DATE CLASS VALIDATION!!!
+	std::string name, manufacturerName, comment, dateFormat;
+	Unit unitOfMeasurement;
+	size_t availableQuantity;
 
+	std::cin.ignore();
+	std::cout << "Enter product name: \n";
+	std::getline(std::cin, name);
+	std::cout << "Enter manufacturer name: \n";
+	std::getline(std::cin, manufacturerName);
+	std::cout << "Enter comment(optional) : \n";
+	std::getline(std::cin, comment);
+	std::cout << "Enter expiration date in format \"YYYY-MM-DD\" : \n";
+	std::getline(std::cin, dateFormat);
+	Date expirationDate(dateFormat.c_str());
+	Date entryDate("2020-05-30");
+	//std::cout << "Enter unit of measurement (L/KG): \n";
+	std::cout << "Enter product quantity : \n";
+	std::cin >> availableQuantity;
+
+	Product product(name, expirationDate, entryDate, manufacturerName, Unit::Kilograms,
+		availableQuantity, comment);
+	storage.addProduct(product);
+}
+
+void ApplicationLauncher::removeProduct()
+{
+	//TODO!!! ADD PRODUCT FACTORY AND VALIDATION AND FIX DATE CLASS VALIDATION!!!
+	std::string name;
+	size_t amount;
+
+	std::cin.ignore();
+	std::cin >> amount;
+	std::getline(std::cin, name);
+
+	storage.removeProduct(name, amount);
 }
 
 void ApplicationLauncher::createNewStorage()
 {
+	//TODO!!! ADD STORAGE FACTORY
+
 	std::cout << "Selected file is empty. A new storage will be created.\n";
-	size_t sectionsCount, sectionCapacity, shelfsCount, storageCapacity = 0;
+	size_t sectionsCount, sectionCapacity, storageCapacity = 0;
 	std::cout << "Enter storage sections count: \n";
 	std::cin >> sectionsCount;
 	for (size_t i = 0; i < sectionsCount; i++)
 	{
 		std::cout << "Enter section capacity: \n";
 		std::cin >> sectionCapacity;
-		std::cout << "Enter shelfs count: \n";
-		std::cin >> shelfsCount;
-		Section section(i, 0, shelfsCount, sectionCapacity);
+		Section section(0, sectionCapacity);
 		storage.addSection(section);
 		storageCapacity += sectionCapacity;
 	}

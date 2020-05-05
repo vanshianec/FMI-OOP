@@ -157,6 +157,30 @@ const int Date::daysDifference(const Date& other) const
 	return abs(totalDays - otherTotalDays);
 }
 
+bool Date::operator==(const Date& other) const
+{
+	return day == other.day && month == other.month && year == other.year;
+}
+
+bool Date::operator > (const Date& other) const
+{
+	if (year > other.year)
+	{
+		return true;
+	}
+	else if (year == other.year && month > other.month)
+	{
+		return true;
+	}
+	else if (month == other.month && day > other.day)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+
 bool isNumber(const char* dateFormat, int& startIndex, const int length)
 {
 	while (startIndex < length)

@@ -4,6 +4,11 @@
 #include <string>
 #include "Date.h"
 
+enum class Unit 
+{
+	Liters, Kilograms
+};
+
 class Product
 {
 private:
@@ -12,15 +17,23 @@ private:
 	Date entryDate;
 	std::string manufacturerName;
 	//TODO IMPORTANT ENUM
-	size_t unitOfMeasurement;
+	Unit unitOfMeasurement;
 	size_t availableQuantity;
-	std::string location;
+	size_t sectionId;
 	std::string comment;
 
 public:
 	Product();
+	Product(const std::string& _name, const Date& _expirationDate, const Date& _entryDate,
+		const std::string& _manufacturerName, const Unit _unitOfMeasurement,
+		const size_t _availableQuantity, const std::string& _comment);
+
+	bool operator < (const Product& other) const;
 	const std::string& getName() const;
+	const size_t getSectionId() const;
+	const Date& getExpirationDate() const;
 	const size_t getAvailableQuantity() const;
+	void setSectionId(const size_t _sectionId);
 };
 
 #endif

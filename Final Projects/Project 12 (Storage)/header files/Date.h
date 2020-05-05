@@ -20,6 +20,8 @@ public:
 	const int getMonth() const;
 	const int getDay() const;
 	const int daysDifference(const Date& other) const;
+	bool operator==(const Date& other) const;
+	bool operator > (const Date& other) const;
 };
 
 bool isNumber(const char* dateFormat, int &startIndex, const int length);

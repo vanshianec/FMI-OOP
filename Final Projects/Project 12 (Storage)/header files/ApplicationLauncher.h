@@ -21,6 +21,7 @@ private:
 	void listSupportedCommands();
 	void printAvailableProducts();
 	void addProduct();
+	void removeProduct();
 	void createNewStorage();
 	void openFile();
 public:

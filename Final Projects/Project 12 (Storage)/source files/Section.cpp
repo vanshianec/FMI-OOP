@@ -3,19 +3,22 @@
 
 #include "Section.h"
 
-Section::Section() : id(0), currentItemsCount(0), shelfsCount(0), capacity(0) {}
+Section::Section() : itemsCount(0), capacity(0) {}
 
-Section::Section(size_t _id, size_t _currentItemsCount, size_t _shelfsCount, size_t _capacity)
+Section::Section(size_t _itemsCount, size_t _capacity)
 {
-	id = _id;
-	currentItemsCount = _currentItemsCount;
-	shelfsCount = _shelfsCount;
+	itemsCount = _itemsCount;
 	capacity = _capacity;
 }
 
 const size_t Section::getCapacity() const
 {
 	return capacity;
+}
+
+void Section::addItemsCount(const size_t count)
+{
+	itemsCount += count;
 }
 
 #endif
