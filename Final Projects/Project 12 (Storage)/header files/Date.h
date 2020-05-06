@@ -24,6 +24,7 @@ public:
 	bool operator > (const Date& other) const;
 };
 
+std::ostream& operator<<(std::ostream& out, const Date& date);
 bool isNumber(const char* dateFormat, int &startIndex, const int length);
 void addValues(int &newYear, int &newMonth, int &newDay, const char* dateFormat);
 int num(char c);

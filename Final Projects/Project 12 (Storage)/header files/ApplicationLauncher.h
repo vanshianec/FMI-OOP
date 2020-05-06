@@ -20,6 +20,7 @@ private:
 	void clearData();
 	void listSupportedCommands();
 	void printAvailableProducts();
+	void logStorageChanges();
 	void addProduct();
 	void removeProduct();
 	void createNewStorage();

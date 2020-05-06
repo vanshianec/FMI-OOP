@@ -4,7 +4,7 @@
 #include <string>
 #include "Date.h"
 
-enum class Unit 
+enum class Unit
 {
 	Liters, Kilograms
 };
@@ -16,9 +16,8 @@ private:
 	Date expirationDate;
 	Date entryDate;
 	std::string manufacturerName;
-	//TODO IMPORTANT ENUM
 	Unit unitOfMeasurement;
-	size_t availableQuantity;
+	size_t quantity;
 	size_t sectionId;
 	std::string comment;
 
@@ -26,14 +25,21 @@ public:
 	Product();
 	Product(const std::string& _name, const Date& _expirationDate, const Date& _entryDate,
 		const std::string& _manufacturerName, const Unit _unitOfMeasurement,
-		const size_t _availableQuantity, const std::string& _comment);
+		const size_t _quantity, const std::string& _comment);
 
+	Product& operator=(const Product& other);
 	bool operator < (const Product& other) const;
 	const std::string& getName() const;
 	const size_t getSectionId() const;
 	const Date& getExpirationDate() const;
-	const size_t getAvailableQuantity() const;
+	const size_t getQuantity() const;
 	void setSectionId(const size_t _sectionId);
+	void setQuantity(const size_t _quantity);
+	void reduceQuantity(const size_t amount);
+	bool operator==(const Product& other) const;
+
+private:
+	void copyValues(const Product& other);
 };
 
 #endif
