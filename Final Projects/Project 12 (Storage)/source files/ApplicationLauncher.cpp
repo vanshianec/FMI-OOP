@@ -41,6 +41,10 @@ void ApplicationLauncher::executeCommand()
 		{
 			removeProduct();
 		}
+		else if (command == LOG_COMMAND)
+		{
+			logStorageChanges();
+		}
 	}
 	else if (command == OPEN_COMMAND)
 	{
@@ -119,6 +123,16 @@ void ApplicationLauncher::removeProduct()
 	std::getline(std::cin, name);
 
 	storage.removeProduct(name, amount);
+}
+
+void ApplicationLauncher::logStorageChanges()
+{
+	char startDateFormat[11], endDateFormat[11];
+	std::cin >> startDateFormat, endDateFormat;
+	Date startDate(startDateFormat);
+	Date endDate(endDateFormat);
+
+	storage.logChanges(startDate, endDate);
 }
 
 void ApplicationLauncher::createNewStorage()

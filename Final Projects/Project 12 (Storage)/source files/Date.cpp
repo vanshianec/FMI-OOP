@@ -180,6 +180,20 @@ bool Date::operator > (const Date& other) const
 	return false;
 }
 
+std::ostream& operator<<(std::ostream& out, const Date& date)
+{
+	out << "\"" << date.getYear() << "-";
+	if (date.getMonth() <= 9)
+	{
+		out << "0";
+	}
+	out << date.getMonth() << "-";
+	if (date.getDay() <= 9)
+	{
+		out << "0";
+	}
+	out << date.getDay() << "\"";
+}
 
 bool isNumber(const char* dateFormat, int& startIndex, const int length)
 {

@@ -4,19 +4,29 @@
 #include "Product.h"
 #include <iostream>
 
-Product::Product() : availableQuantity(0) {}
+Product::Product() : quantity(0) {}
 
 Product::Product(const std::string& _name, const Date& _expirationDate, const Date& _entryDate,
 	const std::string& _manufacturerName, const Unit _unitOfMeasurement,
-	const size_t _availableQuantity, const std::string& _comment)
+	const size_t _quantity, const std::string& _comment)
 {
 	name = _name;
 	expirationDate = _expirationDate;
 	entryDate = _entryDate;
 	manufacturerName = _manufacturerName;
 	unitOfMeasurement = _unitOfMeasurement;
-	availableQuantity = _availableQuantity;
+	quantity = _quantity;
 	comment = _comment;
+}
+
+Product& Product::operator=(const Product& other)
+{
+	if (this != &other)
+	{
+		copyValues(other);
+	}
+
+	return *this;
 }
 
 const std::string& Product::getName() const
@@ -34,9 +44,9 @@ const Date& Product::getExpirationDate() const
 	return expirationDate;
 }
 
-const size_t Product::getAvailableQuantity() const
+const size_t Product::getQuantity() const
 {
-	return availableQuantity;
+	return quantity;
 }
 
 void Product::setSectionId(const size_t _sectionId)
@@ -44,9 +54,39 @@ void Product::setSectionId(const size_t _sectionId)
 	sectionId = _sectionId;
 }
 
+void Product::setQuantity(const size_t _quantity)
+{
+	quantity = _quantity;
+}
+
+void Product::reduceQuantity(const size_t amount)
+{
+	quantity -= amount;
+}
+
 bool Product::operator < (const Product& other) const
 {
 	return expirationDate > other.expirationDate;
+}
+
+bool Product::operator==(const Product& other) const
+{
+	return name == other.name && expirationDate == other.expirationDate
+		&& entryDate == other.entryDate && manufacturerName == other.manufacturerName
+		&& unitOfMeasurement == other.unitOfMeasurement && quantity == other.quantity
+		&& sectionId == other.sectionId && comment == other.comment;
+}
+
+void Product::copyValues(const Product& other)
+{
+	name = other.name;
+	expirationDate = other.expirationDate;
+	entryDate = other.entryDate;
+	manufacturerName = other.manufacturerName;
+	unitOfMeasurement = other.unitOfMeasurement;
+	quantity = other.quantity;
+	sectionId = other.sectionId;
+	comment = other.comment;
 }
 
 #endif

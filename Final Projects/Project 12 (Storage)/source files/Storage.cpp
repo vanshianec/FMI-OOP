@@ -20,7 +20,7 @@ void Storage::addSection(const Section& section)
 
 void Storage::addProduct(Product& product)
 {
-	if (product.getAvailableQuantity() + size > capacity)
+	if (product.getQuantity() + size > capacity)
 	{
 		std::cout << "There is no space left in the storage for this product!\n";
 		return;
@@ -35,7 +35,7 @@ void Storage::addProduct(Product& product)
 
 	if (added)
 	{
-		//todo add to added items file
+		addedProducts.push_back(product);
 		products.push_back(product);
 	}
 	else
@@ -48,15 +48,10 @@ void Storage::removeProduct(const std::string& name, size_t amount)
 {
 	//todo refactor this mess
 	std::vector<Product> availableProducts;
+	std::vector<size_t> indices;
 	size_t storageAmount = 0;
-	for (size_t i = 0; i < products.size(); i++)
-	{
-		if (products[i].getName() == name)
-		{
-			storageAmount += products[i].getAvailableQuantity();
-			availableProducts.push_back(products[i]);
-		}
-	}
+
+	addAvailableProducts(name, storageAmount, availableProducts, indices);
 
 	if (storageAmount == 0)
 	{
@@ -64,33 +59,67 @@ void Storage::removeProduct(const std::string& name, size_t amount)
 		return;
 	}
 
+	if (amount > storageAmount)
+	{
+		//todo print current products;
+		return;
+	}
+
+	removeAvailableProducts(amount, availableProducts, indices);
+}
+
+void Storage::removeAvailableProducts(size_t& amount, std::vector<Product>& availableProducts, std::vector<size_t>& indices)
+{
 	std::sort(availableProducts.begin(), availableProducts.end());
 
 	size_t i = 0;
-	Product product;
+	Product removedProduct;
 	while (i > 0 && amount > 0)
 	{
-		product = availableProducts[i];
-		size_t amountToBeRemoved = std::min(amount, product.getAvailableQuantity());
-		//todo add to removed binary file
+		size_t amountToBeRemoved = std::min(amount, availableProducts[i].getQuantity());
+		for (size_t j = 0; j < indices.size(); j++)
+		{
+			size_t index = indices[j];
+			if (products[index] == availableProducts[i])
+			{
+				removedProduct = products[index];
+				removedProduct.setQuantity(amountToBeRemoved);
+				removedProducts.push_back(removedProduct);
+				products[index].reduceQuantity(amountToBeRemoved);
+				if (products[index].getQuantity() == 0)
+				{
+					products.erase(products.begin() + index);
+				}
+			}
+		}
 
 		amount -= amountToBeRemoved;
 		i++;
 	}
+}
 
-
-
+void Storage::addAvailableProducts(const std::string& name, size_t& storageAmount, std::vector<Product>& availableProducts, std::vector<size_t>& indices)
+{
+	for (size_t i = 0; i < products.size(); i++)
+	{
+		if (products[i].getName() == name)
+		{
+			storageAmount += products[i].getQuantity();
+			availableProducts.push_back(products[i]);
+			indices.push_back(i);
+		}
+	}
 }
 
 bool Storage::addToSectionWithEnoughSpace(Product& product)
 {
 	for (size_t i = 0; i < sections.size(); i++)
 	{
-		if (sections[i].getItemsCount() + product.getAvailableQuantity() <= sections[i].getCapacity()
+		if (sections[i].getItemsCount() + product.getQuantity() <= sections[i].getCapacity()
 			&& !containsSameItem(i, product.getName()))
 		{
-			sections[i].addItemsCount(product.getAvailableQuantity());
-			size += product.getAvailableQuantity();
+			sections[i].addItemsCount(product.getQuantity());
+			size += product.getQuantity();
 			product.setSectionId(i);
 			return true;
 		}
@@ -116,7 +145,7 @@ bool Storage::addToSectionWithSameExpirationDate(Product& product)
 {
 	Product p;
 	Section s;
-	size_t productQuantity = product.getAvailableQuantity();
+	size_t productQuantity = product.getQuantity();
 
 	for (size_t i = 0; i < products.size(); i++)
 	{
@@ -137,6 +166,13 @@ bool Storage::addToSectionWithSameExpirationDate(Product& product)
 }
 
 void Storage::save(const std::string& path)
+{
+	saveProducts(path);
+	saveAddedProducts();
+	saveRemovedProducts();
+}
+
+void Storage::saveProducts(const std::string& path)
 {
 	std::ofstream out(path, std::ios::binary);
 	size_t count = sections.size();
@@ -159,7 +195,40 @@ void Storage::save(const std::string& path)
 	out.close();
 }
 
+void Storage::saveAddedProducts()
+{
+	std::ofstream out("addedProducts.dat", std::ios::binary, std::ios::app);
+
+	size_t len = addedProducts.size();
+	out.write((char*)&len, sizeof(len));
+	for (size_t i = 0; i < len; i++)
+	{
+		out.write((char*)&addedProducts[i], sizeof(Product));
+	}
+
+	out.close();
+}
+
+void Storage::saveRemovedProducts()
+{
+	std::ofstream out("removedProducts.dat", std::ios::binary, std::ios::app);
+
+	size_t len = removedProducts.size();
+	out.write((char*)&len, sizeof(len));
+	for (size_t i = 0; i < len; i++)
+	{
+		out.write((char*)&removedProducts[i], sizeof(Product));
+	}
+
+	out.close();
+}
+
 void Storage::load(const std::string& path)
+{
+	loadProducts(path);
+}
+
+void Storage::loadProducts(const std::string& path)
 {
 	std::ifstream in(path, std::ios::binary);
 	size_t count;
@@ -185,6 +254,36 @@ void Storage::load(const std::string& path)
 	in.close();
 }
 
+void Storage::loadAddedProducts()
+{
+	std::ifstream in("addedProducts.dat", std::ios::binary);
+	size_t len;
+	Product p;
+	in.read((char*)len, sizeof(len));
+	for (size_t i = 0; i < len; i++)
+	{
+		in.read((char*)&p, sizeof(Product));
+		addedProducts.push_back(p);
+	}
+
+	in.close();
+}
+
+void Storage::loadRemovedProducts()
+{
+	std::ifstream in("removedProducts.dat", std::ios::binary);
+	size_t len;
+	Product p;
+	in.read((char*)len, sizeof(len));
+	for (size_t i = 0; i < len; i++)
+	{
+		in.read((char*)&p, sizeof(Product));
+		removedProducts.push_back(p);
+	}
+
+	in.close();
+}
+
 void Storage::printProducts()
 {
 	std::vector<Product> duplicates = products;
@@ -193,13 +292,13 @@ void Storage::printProducts()
 	for (size_t i = 0; i < duplicates.size(); i++)
 	{
 		duplicatesCount = 0;
-		totalQuantity = duplicates[i].getAvailableQuantity();
+		totalQuantity = duplicates[i].getQuantity();
 		std::cout << duplicates[i].getName();
 		for (size_t j = i + 1; j < duplicates.size(); j++)
 		{
 			if (duplicates[j].getName() == duplicates[i].getName())
 			{
-				totalQuantity += duplicates[j].getAvailableQuantity();
+				totalQuantity += duplicates[j].getQuantity();
 				duplicates.erase(duplicates.begin() + j);
 				duplicatesCount++;
 				j--;
@@ -211,10 +310,22 @@ void Storage::printProducts()
 	}
 }
 
+void Storage::logChanges(const Date& startDate, const Date& endDate)
+{
+	loadAddedProducts();
+	std::cout << "Products added in storage between " << startDate << " and " << endDate << std::endl;
+	printAddedProductsInRange(startDate, endDate);
+	loadRemovedProducts(); 
+	std::cout << "Products removed from storage between " << startDate << " and " << endDate << std::endl;
+	printRemovedProductsInRange(startDate, endDate);
+}
+
 void Storage::clear()
 {
 	sections.clear();
 	products.clear();
+	addedProducts.clear();
+	removedProducts.clear();
 	capacity = 0;
 	size = 0;
 }
