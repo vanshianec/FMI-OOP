@@ -4,7 +4,7 @@
 #include "Product.h"
 #include <iostream>
 
-Product::Product() : quantity(0) {}
+Product::Product() : quantity(0), sectionId(0), unitOfMeasurement(Unit::Kilograms) {}
 
 Product::Product(const std::string& _name, const Date& _expirationDate, const Date& _entryDate,
 	const std::string& _manufacturerName, const Unit _unitOfMeasurement,
@@ -49,6 +49,21 @@ const size_t Product::getQuantity() const
 	return quantity;
 }
 
+const Date& Product::getEntryDate() const
+{
+	return entryDate;
+}
+
+const Date& Product::getRemoveDate() const
+{
+	return removeDate;
+}
+
+const std::string& Product::getManufacturerName() const
+{
+	return manufacturerName;
+}
+
 void Product::setSectionId(const size_t _sectionId)
 {
 	sectionId = _sectionId;
@@ -57,6 +72,11 @@ void Product::setSectionId(const size_t _sectionId)
 void Product::setQuantity(const size_t _quantity)
 {
 	quantity = _quantity;
+}
+
+void Product::setRemoveDate(const Date& _removeDate)
+{
+	removeDate = _removeDate;
 }
 
 void Product::reduceQuantity(const size_t amount)
@@ -87,6 +107,13 @@ void Product::copyValues(const Product& other)
 	quantity = other.quantity;
 	sectionId = other.sectionId;
 	comment = other.comment;
+}
+
+
+std::ostream& operator<<(std::ostream& out, const Product& p)
+{
+	out << p.getName() << " \"" << p.getManufacturerName() << "\" - " << p.getQuantity();
+	return out;
 }
 
 #endif

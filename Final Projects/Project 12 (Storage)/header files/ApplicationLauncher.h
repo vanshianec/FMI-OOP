@@ -21,6 +21,7 @@ private:
 	void listSupportedCommands();
 	void printAvailableProducts();
 	void logStorageChanges();
+	void cleanStorage();
 	void addProduct();
 	void removeProduct();
 	void createNewStorage();

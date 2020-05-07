@@ -26,6 +26,7 @@ private:
 	void loadAddedProducts();
 	void saveRemovedProducts();
 	void loadRemovedProducts();
+	void printProductsInRange(const Date& startDate, const Date& endDate);
 
 public:
 	Storage();
@@ -39,6 +40,7 @@ public:
 	void loadProducts(const std::string& path);
 	void printProducts();
 	void logChanges(const Date& startDate, const Date& endDate);
+	void clean();
 	void clear();
 };
 

@@ -1,6 +1,8 @@
 #ifndef __DATE_H
 #define __DATE_H
 
+#include <iostream>
+
 class Date
 {
 private:
@@ -22,6 +24,9 @@ public:
 	const int daysDifference(const Date& other) const;
 	bool operator==(const Date& other) const;
 	bool operator > (const Date& other) const;
+	bool operator < (const Date& other) const;
+	bool operator <= (const Date& other) const;
+	bool operator >= (const Date& other) const;
 };
 
 std::ostream& operator<<(std::ostream& out, const Date& date);

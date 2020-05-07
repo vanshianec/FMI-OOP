@@ -15,6 +15,7 @@ private:
 	std::string name;
 	Date expirationDate;
 	Date entryDate;
+	Date removeDate;
 	std::string manufacturerName;
 	Unit unitOfMeasurement;
 	size_t quantity;
@@ -32,14 +33,20 @@ public:
 	const std::string& getName() const;
 	const size_t getSectionId() const;
 	const Date& getExpirationDate() const;
+	const Date& getEntryDate() const;
+	const Date& getRemoveDate() const;
 	const size_t getQuantity() const;
+	const std::string& getManufacturerName() const;
 	void setSectionId(const size_t _sectionId);
 	void setQuantity(const size_t _quantity);
+	void setRemoveDate(const Date& _removeDate);
 	void reduceQuantity(const size_t amount);
 	bool operator==(const Product& other) const;
 
 private:
 	void copyValues(const Product& other);
 };
+
+std::ostream& operator<<(std::ostream& out, const Product& product);
 
 #endif

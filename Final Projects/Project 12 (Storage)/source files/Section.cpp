@@ -16,6 +16,11 @@ const size_t Section::getCapacity() const
 	return capacity;
 }
 
+const size_t Section::getItemsCount() const
+{
+	return itemsCount;
+}
+
 void Section::addItemsCount(const size_t count)
 {
 	itemsCount += count;

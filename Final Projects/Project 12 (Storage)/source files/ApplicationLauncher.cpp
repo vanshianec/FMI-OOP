@@ -45,6 +45,10 @@ void ApplicationLauncher::executeCommand()
 		{
 			logStorageChanges();
 		}
+		else if (command == CLEAN_COMMAND)
+		{
+			cleanStorage();
+		}
 	}
 	else if (command == OPEN_COMMAND)
 	{
@@ -102,7 +106,7 @@ void ApplicationLauncher::addProduct()
 	std::cout << "Enter expiration date in format \"YYYY-MM-DD\" : \n";
 	std::getline(std::cin, dateFormat);
 	Date expirationDate(dateFormat.c_str());
-	Date entryDate("2020-05-30");
+	Date entryDate(CURRENT_DATE.c_str());
 	//std::cout << "Enter unit of measurement (L/KG): \n";
 	std::cout << "Enter product quantity : \n";
 	std::cin >> availableQuantity;
@@ -135,17 +139,22 @@ void ApplicationLauncher::logStorageChanges()
 	storage.logChanges(startDate, endDate);
 }
 
+void ApplicationLauncher::cleanStorage()
+{
+	storage.clean();
+}
+
 void ApplicationLauncher::createNewStorage()
 {
 	//TODO!!! ADD STORAGE FACTORY
 
-	std::cout << "Selected file is empty. A new storage will be created.\n";
+	std::cout << "Selected file is empty. Create a new storage : \n\n";
 	size_t sectionsCount, sectionCapacity, storageCapacity = 0;
 	std::cout << "Enter storage sections count: \n";
 	std::cin >> sectionsCount;
 	for (size_t i = 0; i < sectionsCount; i++)
 	{
-		std::cout << "Enter section capacity: \n";
+		std::cout << "Enter section " << i + 1 << " capacity: \n";
 		std::cin >> sectionCapacity;
 		Section section(0, sectionCapacity);
 		storage.addSection(section);
@@ -170,7 +179,6 @@ void ApplicationLauncher::openFile()
 	else if (file.open(path))
 	{
 		storage.load(path);
-		std::cout << "Storage successfully opened!\n";
 		firstLaunch = false;
 	}
 	else

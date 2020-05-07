@@ -84,6 +84,7 @@ void Storage::removeAvailableProducts(size_t& amount, std::vector<Product>& avai
 			{
 				removedProduct = products[index];
 				removedProduct.setQuantity(amountToBeRemoved);
+				removedProduct.setRemoveDate(CURRENT_DATE.c_str());
 				removedProducts.push_back(removedProduct);
 				products[index].reduceQuantity(amountToBeRemoved);
 				if (products[index].getQuantity() == 0)
@@ -197,7 +198,7 @@ void Storage::saveProducts(const std::string& path)
 
 void Storage::saveAddedProducts()
 {
-	std::ofstream out("addedProducts.dat", std::ios::binary, std::ios::app);
+	std::ofstream out("added.bin", std::ios::binary | std::ios::app);
 
 	size_t len = addedProducts.size();
 	out.write((char*)&len, sizeof(len));
@@ -211,7 +212,7 @@ void Storage::saveAddedProducts()
 
 void Storage::saveRemovedProducts()
 {
-	std::ofstream out("removedProducts.dat", std::ios::binary, std::ios::app);
+	std::ofstream out("removed.bin", std::ios::binary | std::ios::app);
 
 	size_t len = removedProducts.size();
 	out.write((char*)&len, sizeof(len));
@@ -226,6 +227,7 @@ void Storage::saveRemovedProducts()
 void Storage::load(const std::string& path)
 {
 	loadProducts(path);
+	std::cout << "Storage successfully opened!\n";
 }
 
 void Storage::loadProducts(const std::string& path)
@@ -259,7 +261,7 @@ void Storage::loadAddedProducts()
 	std::ifstream in("addedProducts.dat", std::ios::binary);
 	size_t len;
 	Product p;
-	in.read((char*)len, sizeof(len));
+	in.read((char*)&len, sizeof(len));
 	for (size_t i = 0; i < len; i++)
 	{
 		in.read((char*)&p, sizeof(Product));
@@ -274,7 +276,7 @@ void Storage::loadRemovedProducts()
 	std::ifstream in("removedProducts.dat", std::ios::binary);
 	size_t len;
 	Product p;
-	in.read((char*)len, sizeof(len));
+	in.read((char*)&len, sizeof(len));
 	for (size_t i = 0; i < len; i++)
 	{
 		in.read((char*)&p, sizeof(Product));
@@ -306,18 +308,69 @@ void Storage::printProducts()
 		}
 
 		std::cout << " - " << totalQuantity << std::endl;
-		i -= duplicatesCount;
 	}
 }
 
 void Storage::logChanges(const Date& startDate, const Date& endDate)
 {
 	loadAddedProducts();
+	loadRemovedProducts();
+
+	std::sort(addedProducts.begin(), addedProducts.end(),
+		[](const Product& lhs, const Product& rhs)
+		{
+			return lhs.getEntryDate() < rhs.getEntryDate();
+		});
+
+	std::sort(removedProducts.begin(), removedProducts.end(),
+		[](const Product& lhs, const Product& rhs)
+		{
+			return lhs.getRemoveDate() < rhs.getRemoveDate();
+		});
+
+	printProductsInRange(startDate, endDate);
+}
+
+void Storage::printProductsInRange(const Date& startDate, const Date& endDate)
+{
 	std::cout << "Products added in storage between " << startDate << " and " << endDate << std::endl;
-	printAddedProductsInRange(startDate, endDate);
-	loadRemovedProducts(); 
+
+	//TODO TRY FOR EACH CYCLE
+
+	Product p;
+	for (size_t i = 0; i < addedProducts.size(); i++)
+	{
+		p = addedProducts[i];
+		if (p.getEntryDate() >= startDate && p.getEntryDate() <= endDate)
+		{
+			std::cout << p << " " << p.getEntryDate() << std::endl;
+		}
+	}
+
 	std::cout << "Products removed from storage between " << startDate << " and " << endDate << std::endl;
-	printRemovedProductsInRange(startDate, endDate);
+
+	for (size_t i = 0; i < removedProducts.size(); i++)
+	{
+		p = removedProducts[i];
+		if (p.getRemoveDate() >= startDate && p.getRemoveDate() <= endDate)
+		{
+			std::cout << p << " " << p.getRemoveDate() << std::endl;
+		}
+	}
+}
+
+void Storage::clean()
+{
+	for (size_t i = 0; i < products.size(); i++)
+	{
+		if (products[i].getExpirationDate() >= CURRENT_DATE.c_str())
+		{
+			std::cout << "Cleaned product : " << products[i] << std::endl;
+			products[i].setRemoveDate(CURRENT_DATE.c_str());
+			removedProducts.push_back(products[i]);
+			products.erase(products.begin() + i);
+		}
+	}
 }
 
 void Storage::clear()
