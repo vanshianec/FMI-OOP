@@ -97,11 +97,50 @@ bool Product::operator==(const Product& other) const
 		&& sectionId == other.sectionId && comment == other.comment;
 }
 
+void Product::save(std::ofstream& out)
+{
+	size_t len = name.length();
+	out.write((char*)&len, sizeof(len));
+	out.write(name.c_str(), len);
+	out.write((char*)&expirationDate, sizeof(Date));
+	out.write((char*)&entryDate, sizeof(Date));
+	out.write((char*)&removeDate, sizeof(Date));
+	len = manufacturerName.length();
+	out.write((char*)&len, sizeof(len));
+	out.write(manufacturerName.c_str(), len);
+	out.write((char*)&unitOfMeasurement, sizeof(Unit));
+	out.write((char*)&quantity, sizeof(quantity));
+	out.write((char*)&sectionId, sizeof(sectionId));
+	len = comment.length();
+	out.write((char*)&len, sizeof(len));
+	out.write(comment.c_str(), len);
+}
+void Product::load(std::ifstream& in)
+{
+	size_t len;
+	in.read((char*)&len, sizeof(len));
+	name.resize(len);
+	in.read(&name[0], len);
+	in.read((char*)&expirationDate, sizeof(Date));
+	in.read((char*)&entryDate, sizeof(Date));
+	in.read((char*)&removeDate, sizeof(Date));
+	in.read((char*)&len, sizeof(len));
+	manufacturerName.resize(len);
+	in.read(&manufacturerName[0], len);
+	in.read((char*)&unitOfMeasurement, sizeof(Unit));
+	in.read((char*)&quantity, sizeof(quantity));
+	in.read((char*)&sectionId, sizeof(sectionId));
+	in.read((char*)&len, sizeof(len));
+	comment.resize(len);
+	in.read(&comment[0], len);
+}
+
 void Product::copyValues(const Product& other)
 {
 	name = other.name;
 	expirationDate = other.expirationDate;
 	entryDate = other.entryDate;
+	removeDate = other.removeDate;
 	manufacturerName = other.manufacturerName;
 	unitOfMeasurement = other.unitOfMeasurement;
 	quantity = other.quantity;

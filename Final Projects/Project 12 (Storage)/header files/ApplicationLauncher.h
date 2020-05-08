@@ -7,7 +7,6 @@
 class ApplicationLauncher
 {
 
-	//TODO IMPORTANT MAKE CONSOLE READER AND WRITER!!!
 private:
 	FileUtil file;
 	Storage storage;
@@ -27,6 +26,7 @@ private:
 	void createNewStorage();
 	void openFile();
 public:
+
 	ApplicationLauncher();
 	void run();
 };

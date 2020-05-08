@@ -125,6 +125,7 @@ void ApplicationLauncher::removeProduct()
 	std::cin.ignore();
 	std::cin >> amount;
 	std::getline(std::cin, name);
+	trim(name);
 
 	storage.removeProduct(name, amount);
 }
@@ -132,7 +133,7 @@ void ApplicationLauncher::removeProduct()
 void ApplicationLauncher::logStorageChanges()
 {
 	char startDateFormat[11], endDateFormat[11];
-	std::cin >> startDateFormat, endDateFormat;
+	std::cin >> startDateFormat >> endDateFormat;
 	Date startDate(startDateFormat);
 	Date endDate(endDateFormat);
 

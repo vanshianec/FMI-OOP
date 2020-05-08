@@ -41,6 +41,8 @@ public:
 	void setQuantity(const size_t _quantity);
 	void setRemoveDate(const Date& _removeDate);
 	void reduceQuantity(const size_t amount);
+	void save(std::ofstream& out);
+	void load(std::ifstream& in);
 	bool operator==(const Product& other) const;
 
 private:
