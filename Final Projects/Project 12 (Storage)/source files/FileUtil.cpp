@@ -5,16 +5,24 @@
 
 #include "FileUtil.h"
 
-bool FileUtil::isEmpty(const std::string& path) const
+std::string FileUtil::path = "";
+
+bool FileUtil::isEmpty()
 {
-	std::ifstream in(path);
+	std::ifstream in(FileUtil::path);
 	return in.peek() == std::ifstream::traits_type::eof();
 }
 
-bool FileUtil::open(const std::string& path)
+bool FileUtil::open()
 {
-	//TODO
-	return true;
+	std::ifstream in(path);
+	if (in.is_open())
+	{
+		in.close();
+		return true;
+	}
+
+	return false;
 }
 
 #endif

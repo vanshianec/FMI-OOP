@@ -2,6 +2,7 @@
 #define __PRODUCT_CPP
 
 #include "Product.h"
+#include "Visitor.h"
 #include <iostream>
 
 Product::Product() : quantity(0), sectionId(0), unitOfMeasurement(Unit::Kilograms) {}
@@ -27,6 +28,11 @@ Product& Product::operator=(const Product& other)
 	}
 
 	return *this;
+}
+
+void Product::accept(Visitor* visitor)
+{
+	visitor->proccesProduct(*this);
 }
 
 const std::string& Product::getName() const
@@ -64,6 +70,46 @@ const std::string& Product::getManufacturerName() const
 	return manufacturerName;
 }
 
+const std::string& Product::getComment() const
+{
+	return comment;
+}
+
+const Unit Product::getUnitOfMeasurement() const
+{
+	return unitOfMeasurement;
+}
+
+void Product::setName(const std::string& _name)
+{
+	name = _name;
+}
+
+void Product::setManufacturerName(const std::string& _manufacturerName)
+{
+	manufacturerName = _manufacturerName;
+}
+
+void Product::setComment(const std::string& _comment)
+{
+	comment = _comment;
+}
+
+void Product::setExpirationDate(const Date& _expirationDate)
+{
+	expirationDate = _expirationDate;
+}
+
+void Product::setEntryDate(const Date& _entryDate)
+{
+	entryDate = _entryDate;
+}
+
+void Product::setUnitOfMeasuremnet(const Unit& _unitOfMeasurement)
+{
+	unitOfMeasurement = _unitOfMeasurement;
+}
+
 void Product::setSectionId(const size_t _sectionId)
 {
 	sectionId = _sectionId;
@@ -95,44 +141,6 @@ bool Product::operator==(const Product& other) const
 		&& entryDate == other.entryDate && manufacturerName == other.manufacturerName
 		&& unitOfMeasurement == other.unitOfMeasurement && quantity == other.quantity
 		&& sectionId == other.sectionId && comment == other.comment;
-}
-
-void Product::save(std::ofstream& out)
-{
-	size_t len = name.length();
-	out.write((char*)&len, sizeof(len));
-	out.write(name.c_str(), len);
-	out.write((char*)&expirationDate, sizeof(Date));
-	out.write((char*)&entryDate, sizeof(Date));
-	out.write((char*)&removeDate, sizeof(Date));
-	len = manufacturerName.length();
-	out.write((char*)&len, sizeof(len));
-	out.write(manufacturerName.c_str(), len);
-	out.write((char*)&unitOfMeasurement, sizeof(Unit));
-	out.write((char*)&quantity, sizeof(quantity));
-	out.write((char*)&sectionId, sizeof(sectionId));
-	len = comment.length();
-	out.write((char*)&len, sizeof(len));
-	out.write(comment.c_str(), len);
-}
-void Product::load(std::ifstream& in)
-{
-	size_t len;
-	in.read((char*)&len, sizeof(len));
-	name.resize(len);
-	in.read(&name[0], len);
-	in.read((char*)&expirationDate, sizeof(Date));
-	in.read((char*)&entryDate, sizeof(Date));
-	in.read((char*)&removeDate, sizeof(Date));
-	in.read((char*)&len, sizeof(len));
-	manufacturerName.resize(len);
-	in.read(&manufacturerName[0], len);
-	in.read((char*)&unitOfMeasurement, sizeof(Unit));
-	in.read((char*)&quantity, sizeof(quantity));
-	in.read((char*)&sectionId, sizeof(sectionId));
-	in.read((char*)&len, sizeof(len));
-	comment.resize(len);
-	in.read(&comment[0], len);
 }
 
 void Product::copyValues(const Product& other)

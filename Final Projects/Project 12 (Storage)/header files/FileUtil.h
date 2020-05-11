@@ -6,9 +6,9 @@
 class FileUtil
 {
 public:
-	bool isEmpty(const std::string& path) const;
-	bool open(const std::string& path);
-
+	static std::string path;
+	static bool isEmpty();
+	static bool open();
 };
 
 #endif

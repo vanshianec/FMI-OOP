@@ -3,13 +3,15 @@
 
 #include <string>
 #include "Date.h"
+#include "Visible.h"
 
+//TODO EXTRACT TO HEADER FILE
 enum class Unit
 {
 	Liters, Kilograms
 };
 
-class Product
+class Product : public Visible
 {
 private:
 	std::string name;
@@ -30,20 +32,30 @@ public:
 
 	Product& operator=(const Product& other);
 	bool operator < (const Product& other) const;
+	bool operator==(const Product&) const;
+
+	void accept(Visitor*);
+
 	const std::string& getName() const;
-	const size_t getSectionId() const;
+	const std::string& getManufacturerName() const;
 	const Date& getExpirationDate() const;
 	const Date& getEntryDate() const;
 	const Date& getRemoveDate() const;
+	const Unit getUnitOfMeasurement() const;
 	const size_t getQuantity() const;
-	const std::string& getManufacturerName() const;
-	void setSectionId(const size_t _sectionId);
-	void setQuantity(const size_t _quantity);
-	void setRemoveDate(const Date& _removeDate);
-	void reduceQuantity(const size_t amount);
-	void save(std::ofstream& out);
-	void load(std::ifstream& in);
-	bool operator==(const Product& other) const;
+	const size_t getSectionId() const;
+	const std::string& getComment() const;
+
+	void setName(const std::string&);
+	void setManufacturerName(const std::string&);
+	void setComment(const std::string&);
+	void setExpirationDate(const Date&);
+	void setEntryDate(const Date&);
+	void setRemoveDate(const Date&);
+	void setUnitOfMeasuremnet(const Unit&);
+	void setSectionId(const size_t);
+	void setQuantity(const size_t);
+	void reduceQuantity(const size_t);
 
 private:
 	void copyValues(const Product& other);

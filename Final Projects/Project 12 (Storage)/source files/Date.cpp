@@ -73,7 +73,7 @@ void Date::setDate(const int _year, const int _month, const int _day)
 {
 	if (!isValidDate(_year, _month, _day))
 	{
-		throw 1;
+		throw "Invalid date format";
 	}
 
 	year = _year;
@@ -104,7 +104,7 @@ Date::Date(const char* dateFormat) : year(1900), month(1), day(1)
 {
 	if (!isValidFormat(dateFormat, strlen(dateFormat)))
 	{
-		throw 1;
+		throw "Invalid date format";
 	}
 
 	int _year = 0;
@@ -128,33 +128,6 @@ const int Date::getMonth() const
 const int Date::getDay() const
 {
 	return day;
-}
-
-const int Date::daysDifference(const Date& other) const
-{
-	int totalDays = 0, otherTotalDays = 0;
-	const int monthDays[12] = { 31, 28, 31, 30, 31, 30,
-								31, 31, 30, 31, 30, 31 };
-
-	totalDays += year * 365 + day;
-
-	for (int i = 0; i < month - 1; i++)
-	{
-		totalDays += monthDays[i];
-	}
-
-	totalDays += countLeapYears(year, month);
-
-	otherTotalDays += other.year * 365 + other.day;
-
-	for (int i = 0; i < other.month - 1; i++)
-	{
-		otherTotalDays += monthDays[i];
-	}
-
-	otherTotalDays += countLeapYears(other.year, other.month);
-
-	return abs(totalDays - otherTotalDays);
 }
 
 bool Date::operator==(const Date& other) const

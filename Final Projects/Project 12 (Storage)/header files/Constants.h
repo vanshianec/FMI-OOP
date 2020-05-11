@@ -16,9 +16,6 @@ const std::string CLEAN_COMMAND = "clean";
 const std::string REMOVE_COMMAND = "remove";
 const std::string USER_ALERT_MESSAGE = "Type \"open <path>\" to open a file\n";
 
-const std::string FILE_CLOSED_MESSAGE = "Successfully closed ";
-const std::string FILE_SAVED_MESSAGE = "Successfully saved ";
-const std::string FILE_OPENED_MESSAGE = "Successfully opened ";
 const std::string FILE_ERROR_MESSAGE = "Error opening file. Check if the specified path is correct and try again.";
 
 const std::string CURRENT_DATE = "2020-05-08";

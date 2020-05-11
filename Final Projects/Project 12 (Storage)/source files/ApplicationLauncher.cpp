@@ -5,9 +5,15 @@
 #include<fstream>
 
 #include "ApplicationLauncher.h"
+#include "FileUtil.h"
+#include "StringTrimmer.h"
 
-//todo see without class init
-ApplicationLauncher::ApplicationLauncher() : file(), storage(), firstLaunch(true), command(), path() {}
+ApplicationLauncher::ApplicationLauncher(Visitor* _serializer, Visitor* _deserializer) : firstLaunch(true)
+
+{
+	serializer = _serializer;
+	deserializer = _deserializer;
+}
 
 void ApplicationLauncher::executeCommand()
 {
@@ -62,15 +68,16 @@ void ApplicationLauncher::executeCommand()
 
 void ApplicationLauncher::saveDataInCurrentFile()
 {
-	storage.save(path);
+	storage.accept(serializer);
 }
 
 void ApplicationLauncher::saveDataInAnotherFile()
 {
+	std::string path;
 	std::getline(std::cin, path);
-	//TODO IMPORTANT !!! CREATE STATIC TRIM CLASS AND PATH VALIDATOR
-	trim(path);
-	storage.save(path);
+	StringTrimmer::trim(path);
+	FileUtil::path = path;
+	storage.accept(serializer);
 }
 
 void ApplicationLauncher::clearData()
@@ -91,7 +98,6 @@ void ApplicationLauncher::printAvailableProducts()
 
 void ApplicationLauncher::addProduct()
 {
-	//TODO!!! ADD PRODUCT FACTORY AND VALIDATION AND FIX DATE CLASS VALIDATION!!!
 	std::string name, manufacturerName, comment, dateFormat;
 	Unit unitOfMeasurement;
 	size_t availableQuantity;
@@ -107,25 +113,24 @@ void ApplicationLauncher::addProduct()
 	std::getline(std::cin, dateFormat);
 	Date expirationDate(dateFormat.c_str());
 	Date entryDate(CURRENT_DATE.c_str());
-	//std::cout << "Enter unit of measurement (L/KG): \n";
 	std::cout << "Enter product quantity : \n";
 	std::cin >> availableQuantity;
 
 	Product product(name, expirationDate, entryDate, manufacturerName, Unit::Kilograms,
 		availableQuantity, comment);
-	storage.addProduct(product);
+	storage.addNewProduct(product);
 }
 
 void ApplicationLauncher::removeProduct()
 {
-	//TODO!!! ADD PRODUCT FACTORY AND VALIDATION AND FIX DATE CLASS VALIDATION!!!
+
 	std::string name;
 	size_t amount;
 
 	std::cin.ignore();
 	std::cin >> amount;
 	std::getline(std::cin, name);
-	trim(name);
+	StringTrimmer::trim(name);
 
 	storage.removeProduct(name, amount);
 }
@@ -147,8 +152,6 @@ void ApplicationLauncher::cleanStorage()
 
 void ApplicationLauncher::createNewStorage()
 {
-	//TODO!!! ADD STORAGE FACTORY
-
 	std::cout << "Selected file is empty. Create a new storage : \n\n";
 	size_t sectionsCount, sectionCapacity, storageCapacity = 0;
 	std::cout << "Enter storage sections count: \n";
@@ -168,42 +171,27 @@ void ApplicationLauncher::createNewStorage()
 
 void ApplicationLauncher::openFile()
 {
+	std::string path;
 	std::getline(std::cin, path);
-	trim(path);
+	StringTrimmer::trim(path);
 
-	if (file.isEmpty(path))
+	FileUtil::path = path;
+
+	if (FileUtil::isEmpty())
 	{
 		createNewStorage();
-		storage.save(path);
+		storage.accept(serializer);
 		firstLaunch = false;
 	}
-	else if (file.open(path))
+	else if (FileUtil::open())
 	{
-		storage.load(path);
+		storage.accept(deserializer);
 		firstLaunch = false;
 	}
 	else
 	{
 		std::cout << FILE_ERROR_MESSAGE;
 	}
-}
-
-std::string& ltrim(std::string& str, const std::string& chars)
-{
-	str.erase(0, str.find_first_not_of(chars));
-	return str;
-}
-
-std::string& rtrim(std::string& str, const std::string& chars)
-{
-	str.erase(str.find_last_not_of(chars) + 1);
-	return str;
-}
-
-std::string& trim(std::string& str)
-{
-	const std::string chars = "\t\n\v\f\r ";
-	return ltrim(rtrim(str, chars), chars);
 }
 
 void ApplicationLauncher::run()

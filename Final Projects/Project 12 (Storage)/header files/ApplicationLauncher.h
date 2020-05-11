@@ -1,18 +1,23 @@
 #ifndef __LAUNCHER_H
 #define __LAUNCHER_H
 
-#include "FileUtil.h"
 #include "Storage.h"
 
 class ApplicationLauncher
 {
 
 private:
-	FileUtil file;
+	Visitor* serializer;
+	Visitor* deserializer;
 	Storage storage;
 	bool firstLaunch;
 	std::string command;
-	std::string path;
+
+public:
+	ApplicationLauncher(Visitor* _serializer, Visitor* _deserializer);
+	void run();
+
+private:
 	void executeCommand();
 	void saveDataInCurrentFile();
 	void saveDataInAnotherFile();
@@ -25,14 +30,6 @@ private:
 	void removeProduct();
 	void createNewStorage();
 	void openFile();
-public:
-
-	ApplicationLauncher();
-	void run();
 };
-
-std::string& ltrim(std::string& str, const std::string& chars);
-std::string& rtrim(std::string& str, const std::string& chars);
-std::string& trim(std::string& str);
 
 #endif

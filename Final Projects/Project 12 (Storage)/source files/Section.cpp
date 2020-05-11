@@ -5,7 +5,7 @@
 
 Section::Section() : itemsCount(0), capacity(0) {}
 
-Section::Section(size_t _itemsCount, size_t _capacity)
+Section::Section(const size_t _itemsCount, const size_t _capacity)
 {
 	itemsCount = _itemsCount;
 	capacity = _capacity;

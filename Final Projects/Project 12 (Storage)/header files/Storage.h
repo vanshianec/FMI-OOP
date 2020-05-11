@@ -7,9 +7,9 @@
 #include <string>
 #include <vector>
 
-class Storage
+class Storage : public Visible
 {
-	//TODO ADDED PRODUCTS AND REMOVED PRODUCTS FUNCTION OF HIGHER LEVEL!
+
 private:
 	std::vector<Product> products;
 	std::vector<Product> addedProducts;
@@ -17,31 +17,41 @@ private:
 	std::vector<Section> sections;
 	size_t capacity;
 	size_t size;
-	void addAvailableProducts(const std::string& name, size_t& storageAmount, std::vector<Product>& availableProducts, std::vector<size_t>& indices);
-	void removeAvailableProducts(size_t& amount, std::vector<Product>& availableProducts, std::vector<size_t>& indices);
-	bool addToSectionWithSameExpirationDate(Product& product);
-	bool addToSectionWithEnoughSpace(Product& product);
-	bool containsSameItem(const size_t id, const std::string& productName);
-	void saveAddedProducts();
-	void loadAddedProducts();
-	void saveRemovedProducts();
-	void loadRemovedProducts();
-	void printProductsInRange(const Date& startDate, const Date& endDate);
 
 public:
 	Storage();
-	void setCapacity(const size_t otherCapacity);
-	void addSection(const Section& sections);
-	void addProduct(Product& product);
+
+	void accept(Visitor*);
+
+	const std::vector<Section>& getSections() const;
+	const std::vector<Product>& getProducts() const;
+	const std::vector<Product>& getAddedProducts() const;
+	const std::vector<Product>& getRemovedProducts() const;
+	const size_t getCapacity() const;
+	const size_t getSize() const;
+
+	void setCapacity(const size_t);
+	void setSize(const size_t);
+
+	void addSection(const Section&);
+	void addProduct(const Product&);
+	void addAddedProduct(const Product&);
+	void addRemovedProduct(const Product&);
+
+	void addNewProduct(Product&);
 	void removeProduct(const std::string& name, size_t amount);
-	void save(const std::string& path);
-	void saveProducts(const std::string& path);
-	void load(const std::string& path);
-	void loadProducts(const std::string& path);
 	void printProducts();
 	void logChanges(const Date& startDate, const Date& endDate);
 	void clean();
 	void clear();
+
+private:
+	void addAvailableProducts(const std::string& name, size_t& storageAmount, std::vector<Product>& availableProducts, std::vector<size_t>& indices);
+	void removeAvailableProducts(size_t& amount, std::vector<Product>& availableProducts, std::vector<size_t>& indices);
+	bool addToSectionWithSameExpirationDate(Product&);
+	bool addToSectionWithEnoughSpace(Product&);
+	bool containsSameItem(const size_t id, const std::string& productName);
+	void printProductsInRange(const Date& startDate, const Date& endDate);
 };
 
 #endif

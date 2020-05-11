@@ -2,15 +2,56 @@
 #define __STORAGE_CPP
 
 #include "Storage.h"
+#include "Visitor.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
 
 Storage::Storage() : size(0), capacity(0) {}
 
+void Storage::accept(Visitor* visitor)
+{
+	visitor->proccesStorage(*this);
+}
+
+const std::vector<Section>& Storage::getSections() const
+{
+	return sections;
+}
+
+const std::vector<Product>& Storage::getProducts() const
+{
+	return products;
+}
+
+const std::vector<Product>& Storage::getAddedProducts() const
+{
+	return addedProducts;
+}
+
+const std::vector<Product>& Storage::getRemovedProducts() const
+{
+	return removedProducts;
+}
+
+const size_t Storage::getCapacity() const
+{
+	return capacity;
+}
+
+const size_t Storage::getSize() const
+{
+	return size;
+}
+
 void Storage::setCapacity(const size_t otherCapacity)
 {
 	capacity = otherCapacity;
+}
+
+void Storage::setSize(const size_t otherSize)
+{
+	size = otherSize;
 }
 
 void Storage::addSection(const Section& section)
@@ -18,7 +59,22 @@ void Storage::addSection(const Section& section)
 	sections.push_back(section);
 }
 
-void Storage::addProduct(Product& product)
+void Storage::addProduct(const Product& product)
+{
+	products.push_back(product);
+}
+
+void Storage::addAddedProduct(const Product& product)
+{
+	addedProducts.push_back(product);
+}
+
+void Storage::addRemovedProduct(const Product& product)
+{
+	removedProducts.push_back(product);
+}
+
+void Storage::addNewProduct(Product& product)
 {
 	if (product.getQuantity() + size > capacity)
 	{
@@ -166,129 +222,6 @@ bool Storage::addToSectionWithSameExpirationDate(Product& product)
 	}
 
 	return false;
-}
-
-void Storage::save(const std::string& path)
-{
-	saveProducts(path);
-	saveAddedProducts();
-	saveRemovedProducts();
-	std::cout << "Storage successfully saved!\n";
-}
-
-void Storage::saveProducts(const std::string& path)
-{
-	std::ofstream out(path, std::ios::binary);
-	size_t count = sections.size();
-
-	out.write((char*)&capacity, sizeof(capacity));
-	out.write((char*)&size, sizeof(size));
-	out.write((char*)&count, sizeof(count));
-	for (size_t i = 0; i < count; i++)
-	{
-		out.write((char*)&sections[i], sizeof(Section));
-	}
-
-	count = products.size();
-	out.write((char*)&count, sizeof(count));
-	for (size_t i = 0; i < count; i++)
-	{
-		products[i].save(out);
-	}
-
-	out.close();
-}
-
-void Storage::saveAddedProducts()
-{
-	std::ofstream out("added.bin", std::ios::binary);
-
-	size_t len = addedProducts.size();
-	out.write((char*)&len, sizeof(len));
-	for (size_t i = 0; i < len; i++)
-	{
-		addedProducts[i].save(out);
-	}
-
-	out.close();
-}
-
-void Storage::saveRemovedProducts()
-{
-	std::ofstream out("removed.bin", std::ios::binary);
-
-	size_t len = removedProducts.size();
-	out.write((char*)&len, sizeof(len));
-	for (size_t i = 0; i < len; i++)
-	{
-		removedProducts[i].save(out);
-	}
-
-	out.close();
-}
-
-void Storage::load(const std::string& path)
-{
-	loadProducts(path);
-	loadAddedProducts();
-	loadRemovedProducts();
-	std::cout << "Storage successfully opened!\n";
-}
-
-void Storage::loadProducts(const std::string& path)
-{
-	std::ifstream in(path, std::ios::binary);
-	size_t count;
-	Section s;
-	Product p;
-
-	in.read((char*)&capacity, sizeof(capacity));
-	in.read((char*)&size, sizeof(size));
-	in.read((char*)&count, sizeof(count));
-	for (size_t i = 0; i < count; i++)
-	{
-		in.read((char*)&s, sizeof(Section));
-		sections.push_back(s);
-	}
-
-	in.read((char*)&count, sizeof(count));
-	for (size_t i = 0; i < count; i++)
-	{
-		p.load(in);
-		products.push_back(p);
-	}
-
-	in.close();
-}
-
-void Storage::loadAddedProducts()
-{
-	std::ifstream in("added.bin", std::ios::binary);
-	size_t len;
-	Product p;
-	in.read((char*)&len, sizeof(len));
-	for (size_t i = 0; i < len; i++)
-	{
-		p.load(in);
-		addedProducts.push_back(p);
-	}
-
-	in.close();
-}
-
-void Storage::loadRemovedProducts()
-{
-	std::ifstream in("removed.bin", std::ios::binary);
-	size_t len;
-	Product p;
-	in.read((char*)&len, sizeof(len));
-	for (size_t i = 0; i < len; i++)
-	{
-		p.load(in);
-		removedProducts.push_back(p);
-	}
-
-	in.close();
 }
 
 void Storage::printProducts()

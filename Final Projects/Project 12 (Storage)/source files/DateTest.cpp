@@ -43,14 +43,6 @@ TEST_CASE("Date second constructor tests")
 
 }
 
-TEST_CASE("Dates days difference tests")
-{
-	Date d1("1915-03-21");
-	Date d2("2021-06-24");
-	CHECK(d1.daysDifference(d2) == 38812);
-	CHECK(d2.daysDifference(d1) == 38812);
-}
-
 /*
 int main()
 {
