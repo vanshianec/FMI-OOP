@@ -23,4 +23,9 @@ const std::string& Shape::getFill() const
 	return fill;
 }
 
+Shape::~Shape()
+{
+
+}
+
 #endif
