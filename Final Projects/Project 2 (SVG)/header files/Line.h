@@ -17,6 +17,8 @@ public:
 	const double getXEnd() const;
 	const double getYEnd() const;
 
+	void setXEnd(const double _xEnd);
+	void setYEnd(const double _yEnd);
 };
 
 #endif

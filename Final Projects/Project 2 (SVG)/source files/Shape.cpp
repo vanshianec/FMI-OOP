@@ -14,13 +14,25 @@ const double Shape::getX() const
 {
 	return x;
 }
+
 const double Shape::getY() const
 {
 	return y;
 }
+
 const std::string& Shape::getFill() const
 {
 	return fill;
+}
+
+void Shape::setX(const double _x)
+{
+	x = _x;
+}
+
+void Shape::setY(const double _y)
+{
+	y = _y;
 }
 
 Shape::~Shape()

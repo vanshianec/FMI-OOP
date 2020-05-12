@@ -26,4 +26,14 @@ const double Line::getYEnd() const
 	return yEnd;
 }
 
+void Line::setXEnd(const double _xEnd)
+{
+	xEnd = _xEnd;
+}
+
+void Line::setYEnd(const double _yEnd)
+{
+	yEnd = _yEnd;
+}
+
 #endif

@@ -3,7 +3,7 @@
 
 #include "Visitor.h"
 
-class Printer : Visitor
+class Printer : public Visitor
 {
 public:
 	void processCircle(Circle&);

@@ -5,7 +5,7 @@
 
 class Visitor;
 
-class Shape 
+class Shape
 {
 private:
 	double x;
@@ -21,6 +21,11 @@ public:
 	const double getX() const;
 	const double getY() const;
 	const std::string& getFill() const;
+
+	void setX(const double _x);
+	void setY(const double _y);
+
+	virtual ~Shape();
 };
 
 #endif

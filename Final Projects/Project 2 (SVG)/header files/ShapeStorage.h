@@ -10,11 +10,10 @@ private:
 	std::vector<Shape*> shapes;
 
 public:
-
 	void addShape(Shape*);
 	void printShapes(Visitor*);
-	void eraseShape(size_t index);
-	void translate(Visitor* visitor, size_t index);
+	void eraseShape(int index);
+	void translate(Visitor* visitor, int index);
 	void translate(Visitor*);
 
 	~ShapeStorage();

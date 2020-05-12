@@ -6,7 +6,7 @@
 
 void Printer::processCircle(Circle& circle)
 {
-	std::cout << "circle " << circle.getX() << " " << circle.getY() << circle.getRadius
+	std::cout << "circle " << circle.getX() << " " << circle.getY() << circle.getRadius()
 		<< " " << circle.getFill() << std::endl;
 }
 

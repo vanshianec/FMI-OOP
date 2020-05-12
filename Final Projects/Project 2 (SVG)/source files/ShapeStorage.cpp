@@ -6,33 +6,38 @@
 
 void ShapeStorage::addShape(Shape* shape)
 {
-	shapes.push_back(shape);
+	if (shape != nullptr)
+	{
+		shapes.push_back(shape);
+	}
 }
 
 void ShapeStorage::printShapes(Visitor* visitor)
 {
-	for (Shape* shape : shapes)
+	for (size_t i = 0; i < shapes.size(); i++)
 	{
-		shape->accept(visitor);
+		std::cout << i << ". ";
+		shapes[i]->accept(visitor);
+		std::cout << std::endl;
 	}
 }
 
-void ShapeStorage::eraseShape(size_t index)
+void ShapeStorage::eraseShape(int index)
 {
-	if (index >= shapes.size())
+	if (index < 0 || index >= shapes.size())
 	{
-		std::cout << "Index out of range!" << std::endl;
+		std::cout << "There is no figure number " << index << "!" << std::endl;
 		return;
 	}
 
 	shapes.erase(shapes.begin() + index);
 }
 
-void ShapeStorage::translate(Visitor* visitor, size_t index)
+void ShapeStorage::translate(Visitor* visitor, int index)
 {
-	if (index >= shapes.size())
+	if (index < 0 || index >= shapes.size())
 	{
-		std::cout << "Index out of range!" << std::endl;
+		std::cout << "There is no figure number " << index << "!" << std::endl;
 		return;
 	}
 

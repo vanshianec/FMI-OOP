@@ -3,7 +3,7 @@
 
 #include "Visitor.h"
 
-class Deserializer : Visitor
+class Deserializer : public Visitor
 {
 public:
 	void processCircle(Circle&);

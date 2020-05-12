@@ -3,9 +3,14 @@
 
 #include "Visitor.h"
 
-class Translate : Visitor
+class Translate : public Visitor
 {
+private:
+	double vertical, horizontal;
+
 public:
+	Translate(const double _vertical, const double _horizontal);
+
 	void processCircle(Circle&);
 	void processRectangle(Rectangle&);
 	void processLine(Line&);
