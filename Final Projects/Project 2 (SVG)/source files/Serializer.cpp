@@ -3,17 +3,17 @@
 
 #include "Serializer.h"
 
-void Serializer::processCircle(Circle&)
+void Serializer::processCircle(Circle& circle)
 {
 
 }
 
-void Serializer::processRectangle(Rectangle&)
+void Serializer::processRectangle(Rectangle& rectangle)
 {
 
 }
 
-void Serializer::processLine(Line&)
+void Serializer::processLine(Line& line)
 {
 
 }

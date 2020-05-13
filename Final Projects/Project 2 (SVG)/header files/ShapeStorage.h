@@ -15,6 +15,8 @@ public:
 	void eraseShape(int index);
 	void translate(Visitor* visitor, int index);
 	void translate(Visitor*);
+	void printAllInsideShape(Shape* shape, Visitor* printer);
+	void saveShapes(Visitor*);
 
 	~ShapeStorage();
 };

@@ -8,11 +8,12 @@
 
 int main()
 {
-	/*
+
 	ApplicationLauncher launcher;
 	launcher.run();
-	*/
+
 	
+	/*
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file("test.svg");
 
@@ -30,5 +31,7 @@ int main()
 		std::cout << tool.name() << std::endl;
 
 	}
+	*/
+	
 }
 

@@ -6,21 +6,21 @@
 
 void Printer::processCircle(Circle& circle)
 {
-	std::cout << "circle " << circle.getX() << " " << circle.getY() << circle.getRadius()
-		<< " " << circle.getFill() << std::endl;
+	std::cout << circle.getType() << " " << circle.getX() << " " << circle.getY() << " "
+		<< circle.getRadius() << " " << circle.getFill();
 }
+
 
 void Printer::processRectangle(Rectangle& rectangle)
 {
-	std::cout << "rectangle " << rectangle.getX() << " " << rectangle.getY()
-		<< " " << rectangle.getHeight() << " " << rectangle.getWidth()
-		<< " " << rectangle.getFill() << std::endl;
+	std::cout << rectangle.getType() << " " << rectangle.getX() << " " << rectangle.getY()
+		<< " " << rectangle.getWidth() << " " << rectangle.getHeight() << " " << rectangle.getFill();
 }
 
 void Printer::processLine(Line& line)
 {
-	std::cout << "line " << line.getX() << " " << line.getY() << " " << line.getXEnd()
-		<< " " << line.getYEnd() << " " << line.getFill() << std::endl;
+	std::cout << line.getType() << " " << line.getX() << " " << line.getY() << " "
+		<< line.getXEnd() << " " << line.getYEnd() << " " << line.getFill();
 }
 
 #endif

@@ -3,10 +3,10 @@
 
 #include "Translate.h"
 
-Translate::Translate(const double _vertical, const double _horizontal)
+Translate::Translate(const double _horizontal, const double _vertical)
 {
-	vertical = _vertical;
 	horizontal = _horizontal;
+	vertical = _vertical;
 }
 
 void Translate::processCircle(Circle& circle)

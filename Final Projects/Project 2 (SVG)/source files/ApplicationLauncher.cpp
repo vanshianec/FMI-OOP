@@ -3,11 +3,12 @@
 
 #include <iostream>
 #include "ApplicationLauncher.h"
-#include "FigureFactory.h"
+#include "ShapeFactory.h"
 #include "Translate.h"
 #include "Printer.h"
 #include "Serializer.h"
 #include "Deserializer.h"
+#include "StringTrimmer.h"
 
 ApplicationLauncher::ApplicationLauncher() : firstLaunch(true) {}
 
@@ -92,53 +93,58 @@ void ApplicationLauncher::createShape()
 {
 	std::string type;
 	std::cin >> type;
-	storage.addShape(FigureFactory::create(type));
+	//todo try catch block
+	storage.addShape(ShapeFactory::create(type));
 }
 
 void ApplicationLauncher::eraseShape()
 {
 	size_t index;
 	std::cin >> index;
-	storage.eraseShape(index);
+	storage.eraseShape(index - 1);
 }
 
 void ApplicationLauncher::translateShape()
 {
-	double vertical, horizontal;
-	std::cin >> vertical >> horizontal;
+	double horizontal, vertical;
+	std::cin >> horizontal >> vertical;
 
-	Translate translate(vertical, horizontal);
+	Translate translate(horizontal, vertical);
 
 	std::string num;
-	std::cin.ignore();
 	std::getline(std::cin, num);
+	StringTrimmer::trim(num);
 	if (num.empty())
 	{
 		storage.translate(&translate);
 	}
 	else
 	{
-		storage.translate(&translate, std::stoi(num));
+		storage.translate(&translate, std::stoi(num) - 1);
 	}
 }
 
-void ApplicationLauncher::withinSurface()
+void ApplicationLauncher::withinSurface() 
 {
 	std::string type;
 	std::cin >> type;
-	Visitor* intersection;
+
 	if (type != "circle" && type != "rectangle")
 	{
 		std::cout << "Invalid shape! Only circle and rectangle surfaces allowed !\n";
 		return;
 	}
 
-	//TODO
+	Printer printer;
+	Shape* shape = ShapeFactory::create(type);
+	storage.printAllInsideShape(shape, &printer);
+	delete shape;
 }
 
 void ApplicationLauncher::openFile()
 {
 
+	firstLaunch = false;
 }
 
 void ApplicationLauncher::run()

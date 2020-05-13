@@ -3,17 +3,17 @@
 
 #include "Deserializer.h"
 
-void Deserializer::processCircle(Circle&)
+void Deserializer::processCircle(Circle& circle)
 {
 
 }
 
-void Deserializer::processRectangle(Rectangle&)
+void Deserializer::processRectangle(Rectangle& rectangle)
 {
 
 }
 
-void Deserializer::processLine(Line&)
+void Deserializer::processLine(Line& line)
 {
 
 }
