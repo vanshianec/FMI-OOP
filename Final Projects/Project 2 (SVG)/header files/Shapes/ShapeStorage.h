@@ -3,20 +3,25 @@
 
 #include <vector>
 #include "Shape.h"
+#include "Serializable.h"
 
-class ShapeStorage
+class ShapeStorage : public Serializable
 {
 private:
 	std::vector<Shape*> shapes;
 
 public:
-	void addShape(Shape*);
+	void accept(FileIO* visitor);
+
+	void addShape(Shape*, bool shouldPrint);
 	void printShapes(Visitor*);
 	void eraseShape(int index);
 	void translate(Visitor* visitor, int index);
 	void translate(Visitor*);
 	void printAllInsideShape(Shape* shape, Visitor* printer);
-	void saveShapes(Visitor*);
+	void clear();
+
+	const std::vector<Shape*>& getShapes() const;
 
 	~ShapeStorage();
 };

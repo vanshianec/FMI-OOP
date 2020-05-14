@@ -3,11 +3,24 @@
 
 #include <iostream>
 #include "ShapeStorage.h"
+#include "FileIO.h"
 
-void ShapeStorage::addShape(Shape* shape)
+void ShapeStorage::accept(FileIO* visitor)
 {
-	shapes.push_back(shape);
-	std::cout << "Successfully created " << shape->getType() << " (" << shapes.size() << ")\n";
+	visitor->proccesShapeStorage(*this);
+}
+
+void ShapeStorage::addShape(Shape* shape, bool shouldPrint)
+{
+	if (shape != nullptr)
+	{
+		shapes.push_back(shape);
+	}
+
+	if (shouldPrint && shape != nullptr)
+	{
+		std::cout << "Successfully created " << shape->getType() << " (" << shapes.size() << ")\n";
+	}
 }
 
 void ShapeStorage::printShapes(Visitor* printer)
@@ -22,7 +35,6 @@ void ShapeStorage::printShapes(Visitor* printer)
 
 void ShapeStorage::eraseShape(int index)
 {
-	//todo create custom exception
 	if (index < 0 || index >= shapes.size())
 	{
 		std::cout << "There is no figure number " << index << "!" << std::endl;
@@ -36,7 +48,6 @@ void ShapeStorage::eraseShape(int index)
 
 void ShapeStorage::translate(Visitor* translate, int index)
 {
-	//todo create custom exception
 	if (index < 0 || index >= shapes.size())
 	{
 		std::cout << "There is no figure number " << index + 1 << "!" << std::endl;
@@ -86,25 +97,24 @@ void ShapeStorage::printAllInsideShape(Shape* other, Visitor* printer)
 	}
 }
 
-void ShapeStorage::saveShapes(Visitor* serializer)
-{
-	for (Shape* shape : shapes)
-	{
-		shape->accept(serializer);
-	}
-}
-
-void ShapeStorage::loadShapes(Visitor* deserializer)
-{
-
-}
-
-ShapeStorage::~ShapeStorage()
+void ShapeStorage::clear()
 {
 	for (Shape* shape : shapes)
 	{
 		delete shape;
 	}
+
+	shapes.clear();
+}
+
+const std::vector<Shape*>& ShapeStorage::getShapes() const
+{
+	return shapes;
+}
+
+ShapeStorage::~ShapeStorage()
+{
+	clear();
 }
 
 #endif
