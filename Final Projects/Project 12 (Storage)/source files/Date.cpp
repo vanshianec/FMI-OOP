@@ -4,6 +4,7 @@
 #include <cstring>
 #include <cmath>
 #include <iostream>
+#include "InvalidParameterException.h"
 
 #include "Date.h"
 
@@ -73,7 +74,7 @@ void Date::setDate(const int _year, const int _month, const int _day)
 {
 	if (!isValidDate(_year, _month, _day))
 	{
-		throw "Invalid date format";
+		throw InvalidParameterException("Invalid date format! Supported date format is YYYY-MM-DD");
 	}
 
 	year = _year;
@@ -104,7 +105,7 @@ Date::Date(const char* dateFormat) : year(1900), month(1), day(1)
 {
 	if (!isValidFormat(dateFormat, strlen(dateFormat)))
 	{
-		throw "Invalid date format";
+		throw InvalidParameterException("Invalid date format! Supported date format is YYYY-MM-DD");
 	}
 
 	int _year = 0;

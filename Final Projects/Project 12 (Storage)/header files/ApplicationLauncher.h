@@ -7,14 +7,12 @@ class ApplicationLauncher
 {
 
 private:
-	Visitor* serializer;
-	Visitor* deserializer;
 	Storage storage;
 	bool firstLaunch;
 	std::string command;
 
 public:
-	ApplicationLauncher(Visitor* _serializer, Visitor* _deserializer);
+	ApplicationLauncher();
 	void run();
 
 private:

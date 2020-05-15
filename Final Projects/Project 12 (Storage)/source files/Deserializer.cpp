@@ -32,7 +32,14 @@ void Deserializer::proccesProduct(Product& product)
 	product.setExpirationDate(expirationDate);
 	product.setEntryDate(entryDate);
 	product.setRemoveDate(removeDate);
-	product.setUnitOfMeasuremnet(unitOfMeasurement);
+	if (unitOfMeasurement == Unit::Kilograms)
+	{
+		product.setUnitOfMeasuremnet("kg");
+	}
+	else
+	{
+		product.setUnitOfMeasuremnet("l");
+	}
 	product.setQuantity(quantity);
 	product.setSectionId(sectionId);
 }

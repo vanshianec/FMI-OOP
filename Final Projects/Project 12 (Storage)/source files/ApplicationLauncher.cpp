@@ -7,68 +7,78 @@
 #include "ApplicationLauncher.h"
 #include "FileUtil.h"
 #include "StringTrimmer.h"
+#include "Serializer.h"
+#include "Deserializer.h"
+#include "ProductFactory.h"
+#include "StorageFactory.h"
+#include "InvalidParameterException.h"
 
-ApplicationLauncher::ApplicationLauncher(Visitor* _serializer, Visitor* _deserializer) : firstLaunch(true)
-
-{
-	serializer = _serializer;
-	deserializer = _deserializer;
-}
+ApplicationLauncher::ApplicationLauncher() : firstLaunch(true) {}
 
 void ApplicationLauncher::executeCommand()
 {
-	if (!firstLaunch)
-	{
-		if (command == SAVE_COMMAND)
-		{
-			saveDataInCurrentFile();
-		}
-		else if (command == SAVE_AS_COMMAND)
-		{
-			saveDataInAnotherFile();
-		}
-		else if (command == CLOSE_COMMAND)
-		{
-			clearData();
-		}
-		else if (command == HELP_COMMAND)
-		{
-			listSupportedCommands();
-		}
-		else if (command == PRINT_COMMAND)
-		{
-			printAvailableProducts();
-		}
-		else if (command == ADD_COMMAND)
-		{
-			addProduct();
-		}
-		else if (command == REMOVE_COMMAND)
-		{
-			removeProduct();
-		}
-		else if (command == LOG_COMMAND)
-		{
-			logStorageChanges();
-		}
-		else if (command == CLEAN_COMMAND)
-		{
-			cleanStorage();
-		}
-	}
-	else if (command == OPEN_COMMAND)
+	if (command == "open")
 	{
 		openFile();
 	}
+	else if (!firstLaunch)
+	{
+		if (command == "save")
+		{
+			saveDataInCurrentFile();
+		}
+		else if (command == "saveas")
+		{
+			saveDataInAnotherFile();
+		}
+		else if (command == "close")
+		{
+			clearData();
+		}
+		else if (command == "help")
+		{
+			listSupportedCommands();
+		}
+		else if (command == "print")
+		{
+			printAvailableProducts();
+		}
+		else if (command == "add")
+		{
+			addProduct();
+		}
+		else if (command == "remove")
+		{
+			removeProduct();
+		}
+		else if (command == "log")
+		{
+			logStorageChanges();
+		}
+		else if (command == "clean")
+		{
+			cleanStorage();
+		}
+		else if (command == "create")
+		{
+			createNewStorage();
+		}
+		else
+		{
+			std::cout << "Invalid command! Type \"help\" to see supported commands" << std::endl;
+		}
+	}
 	else
 	{
-		std::cout << USER_ALERT_MESSAGE;
+		std::cout << "Type: \"open <path>\" to open a file" << std::endl;
 	}
 }
 
 void ApplicationLauncher::saveDataInCurrentFile()
 {
-	storage.accept(serializer);
+	Serializer serializer;
+	storage.accept(&serializer);
+	std::cout << "Successfully saved " << FileUtil::fileName() << std::endl;
 }
 
 void ApplicationLauncher::saveDataInAnotherFile()
@@ -77,18 +87,30 @@ void ApplicationLauncher::saveDataInAnotherFile()
 	std::getline(std::cin, path);
 	StringTrimmer::trim(path);
 	FileUtil::path = path;
-	storage.accept(serializer);
+	saveDataInCurrentFile();
 }
 
 void ApplicationLauncher::clearData()
 {
 	storage.clear();
+	std::cout << "Successfuly closed " << FileUtil::fileName() << std::endl;
 	firstLaunch = true;
 }
 
 void ApplicationLauncher::listSupportedCommands()
 {
-	std::cout << "TODO HELP COMMANDS";
+	std::cout << "The following commands are supported:\n";
+	std::cout << "open <file> -> opens <file>\n";
+	std::cout << "close -> closes currently opened file\n";
+	std::cout << "save -> saves the currently opened file\n";
+	std::cout << "saveas <file> -> saves the currently opened file in <file>\n";
+	std::cout << "help -> prints supported commands\n";
+	std::cout << "exit -> exits the program\n";
+	std::cout << "print -> prints available products\n";
+	std::cout << "add <name>, <manufacturer>, <quantity>, <kg> or <l>, <expirationDate>, <comment> -> adds a product to to storage\n";
+	std::cout << "remove <amount> <productName> -> removes <amount> specified products\n";
+	std::cout << "log <from> <to> -> logs products added and removed from the storage between <from> and <to> dates\n";
+	std::cout << "clean -> removes all expired products or products which are about to expire\n";
 }
 
 void ApplicationLauncher::printAvailableProducts()
@@ -98,32 +120,19 @@ void ApplicationLauncher::printAvailableProducts()
 
 void ApplicationLauncher::addProduct()
 {
-	std::string name, manufacturerName, comment, dateFormat;
-	Unit unitOfMeasurement;
-	size_t availableQuantity;
-
-	std::cin.ignore();
-	std::cout << "Enter product name: \n";
-	std::getline(std::cin, name);
-	std::cout << "Enter manufacturer name: \n";
-	std::getline(std::cin, manufacturerName);
-	std::cout << "Enter comment(optional) : \n";
-	std::getline(std::cin, comment);
-	std::cout << "Enter expiration date in format \"YYYY-MM-DD\" : \n";
-	std::getline(std::cin, dateFormat);
-	Date expirationDate(dateFormat.c_str());
-	Date entryDate(CURRENT_DATE.c_str());
-	std::cout << "Enter product quantity : \n";
-	std::cin >> availableQuantity;
-
-	Product product(name, expirationDate, entryDate, manufacturerName, Unit::Kilograms,
-		availableQuantity, comment);
-	storage.addNewProduct(product);
+	try
+	{
+		Product product = ProductFactory::createProduct();
+		storage.addNewProduct(product);
+	}
+	catch (InvalidParameterException ex)
+	{
+		std::cout << ex.what() << std::endl;
+	}
 }
 
 void ApplicationLauncher::removeProduct()
 {
-
 	std::string name;
 	size_t amount;
 
@@ -139,10 +148,16 @@ void ApplicationLauncher::logStorageChanges()
 {
 	char startDateFormat[11], endDateFormat[11];
 	std::cin >> startDateFormat >> endDateFormat;
-	Date startDate(startDateFormat);
-	Date endDate(endDateFormat);
-
-	storage.logChanges(startDate, endDate);
+	try
+	{
+		Date startDate(startDateFormat);
+		Date endDate(endDateFormat);
+		storage.logChanges(startDate, endDate);
+	}
+	catch (InvalidParameterException ex)
+	{
+		std::cout << ex.what() << std::endl;
+	}
 }
 
 void ApplicationLauncher::cleanStorage()
@@ -152,25 +167,19 @@ void ApplicationLauncher::cleanStorage()
 
 void ApplicationLauncher::createNewStorage()
 {
-	std::cout << "Selected file is empty. Create a new storage : \n\n";
-	size_t sectionsCount, sectionCapacity, storageCapacity = 0;
-	std::cout << "Enter storage sections count: \n";
-	std::cin >> sectionsCount;
-	for (size_t i = 0; i < sectionsCount; i++)
-	{
-		std::cout << "Enter section " << i + 1 << " capacity: \n";
-		std::cin >> sectionCapacity;
-		Section section(0, sectionCapacity);
-		storage.addSection(section);
-		storageCapacity += sectionCapacity;
-	}
-
-	storage.setCapacity(storageCapacity);
-	std::cout << "Storage successfully created!\n";
+	storage = StorageFactory::createStorage();
+	Serializer serializer;
+	storage.accept(&serializer);
+	firstLaunch = false;
 }
 
 void ApplicationLauncher::openFile()
 {
+	if (!firstLaunch)
+	{
+		clearData();
+	}
+
 	std::string path;
 	std::getline(std::cin, path);
 	StringTrimmer::trim(path);
@@ -179,31 +188,35 @@ void ApplicationLauncher::openFile()
 
 	if (FileUtil::isEmpty())
 	{
-		createNewStorage();
-		storage.accept(serializer);
 		firstLaunch = false;
+		std::cout << "Selected file is empty!";
+		std::cout << " Type \"create <sectionsCount> <sectionCapacity>\" to create storage sections\n";
 	}
 	else if (FileUtil::open())
 	{
-		storage.accept(deserializer);
+		std::cout << "Successfully opened " << FileUtil::fileName() << std::endl;
+		Deserializer deserializer;
+		storage.accept(&deserializer);
 		firstLaunch = false;
 	}
 	else
 	{
-		std::cout << FILE_ERROR_MESSAGE;
+		std::cout << "Error opening file! Check if the specified path is correct and try again.\n";
 	}
 }
 
 void ApplicationLauncher::run()
 {
-	std::cout << USER_ALERT_MESSAGE;
+	std::cout << "Type: \"open <path>\" to open a file" << std::endl;;
 	std::cin >> command;
 
-	while (command != EXIT_COMMAND)
+	while (command != "exit")
 	{
 		executeCommand();
 		std::cin >> command;
 	}
+
+	std::cout << "Exiting the program..." << std::endl;
 }
 
 #endif

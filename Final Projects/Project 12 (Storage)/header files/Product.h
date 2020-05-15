@@ -4,12 +4,7 @@
 #include <string>
 #include "Date.h"
 #include "Visible.h"
-
-//TODO EXTRACT TO HEADER FILE
-enum class Unit
-{
-	Liters, Kilograms
-};
+#include "Unit.h";
 
 class Product : public Visible
 {
@@ -27,7 +22,7 @@ private:
 public:
 	Product();
 	Product(const std::string& _name, const Date& _expirationDate, const Date& _entryDate,
-		const std::string& _manufacturerName, const Unit _unitOfMeasurement,
+		const std::string& _manufacturerName, const std::string& _unitOfMeasurement,
 		const size_t _quantity, const std::string& _comment);
 
 	Product& operator=(const Product& other);
@@ -52,7 +47,7 @@ public:
 	void setExpirationDate(const Date&);
 	void setEntryDate(const Date&);
 	void setRemoveDate(const Date&);
-	void setUnitOfMeasuremnet(const Unit&);
+	void setUnitOfMeasuremnet(const std::string&);
 	void setSectionId(const size_t);
 	void setQuantity(const size_t);
 	void reduceQuantity(const size_t);

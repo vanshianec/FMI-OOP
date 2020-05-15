@@ -16,6 +16,7 @@ public:
 	const int getYear() const;
 	const int getMonth() const;
 	const int getDay() const;
+	void setDate(const int _year, const int _month, const int _day);
 	bool operator==(const Date& other) const;
 	bool operator > (const Date& other) const;
 	bool operator < (const Date& other) const;
@@ -26,7 +27,6 @@ private:
 	bool isValidDate(const int _year, const int _month, const int _day) const;
 	bool isLeapYear(const int _year) const;
 	bool isValidFormat(const char* dateFormat, const int length) const;
-	void setDate(const int _year, const int _month, const int _day);
 	int countLeapYears(const int _year, const int _month) const;
 };
 

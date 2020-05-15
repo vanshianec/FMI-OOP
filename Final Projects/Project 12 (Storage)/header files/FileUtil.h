@@ -9,6 +9,7 @@ public:
 	static std::string path;
 	static bool isEmpty();
 	static bool open();
+	static const std::string fileName();
 };
 
 #endif

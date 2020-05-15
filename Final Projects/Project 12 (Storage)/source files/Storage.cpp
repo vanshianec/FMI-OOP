@@ -3,6 +3,7 @@
 
 #include "Storage.h"
 #include "Visitor.h"
+#include "DateTime.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -91,6 +92,7 @@ void Storage::addNewProduct(Product& product)
 
 	if (added)
 	{
+		std::cout << "Successfully added " << product << std::endl;
 		addedProducts.push_back(product);
 		products.push_back(product);
 	}
@@ -102,7 +104,6 @@ void Storage::addNewProduct(Product& product)
 
 void Storage::removeProduct(const std::string& name, size_t amount)
 {
-	//todo refactor this mess
 	std::vector<Product> availableProducts;
 	std::vector<size_t> indices;
 	size_t storageAmount = 0;
@@ -117,7 +118,15 @@ void Storage::removeProduct(const std::string& name, size_t amount)
 
 	if (amount > storageAmount)
 	{
-		//todo print current products;
+		std::cout << "You are trying to remove more products than there are in the storage!";
+		std::cout << " Total amount: " << storageAmount << std::endl;
+		std::cout << "List of available products with name " << "\"" << name << "\" :" << std::endl;
+
+		for (size_t i = 0; i < availableProducts.size(); i++)
+		{
+			std::cout << availableProducts[i] << std::endl;
+		}
+
 		return;
 	}
 
@@ -140,8 +149,11 @@ void Storage::removeAvailableProducts(size_t& amount, std::vector<Product>& avai
 			{
 				removedProduct = products[index];
 				removedProduct.setQuantity(amountToBeRemoved);
-				removedProduct.setRemoveDate(CURRENT_DATE.c_str());
+				char dateFormat[11];
+				DateTime::currentDateISO8601(dateFormat);
+				removedProduct.setRemoveDate(dateFormat);
 				removedProducts.push_back(removedProduct);
+				std::cout << "Successfully removed " << removedProduct << std::endl;
 				products[index].reduceQuantity(amountToBeRemoved);
 				if (products[index].getQuantity() == 0)
 				{
@@ -179,7 +191,7 @@ bool Storage::addToSectionWithEnoughSpace(Product& product)
 		{
 			sections[i].addItemsCount(product.getQuantity());
 			size += product.getQuantity();
-			product.setSectionId(i);
+			product.setSectionId(i + 1);
 			return true;
 		}
 	}
@@ -226,6 +238,12 @@ bool Storage::addToSectionWithSameExpirationDate(Product& product)
 
 void Storage::printProducts()
 {
+	if (products.size() == 0)
+	{
+		std::cout << "There are no products available in the storage" << std::endl;
+		return;
+	}
+
 	std::vector<Product> duplicates = products;
 	size_t duplicatesCount, totalQuantity;
 
@@ -270,15 +288,13 @@ void Storage::printProductsInRange(const Date& startDate, const Date& endDate)
 {
 	std::cout << "Products added in storage between " << startDate << " and " << endDate << " :\n";
 
-	//TODO TRY FOR EACH CYCLE
-
 	Product p;
 	for (size_t i = 0; i < addedProducts.size(); i++)
 	{
 		p = addedProducts[i];
 		if (p.getEntryDate() >= startDate && p.getEntryDate() <= endDate)
 		{
-			std::cout << p << ", " << p.getEntryDate() << std::endl;
+			std::cout << p << ", added :" << p.getEntryDate() << ", comment: " << p.getComment() << std::endl;
 		}
 	}
 
@@ -289,23 +305,33 @@ void Storage::printProductsInRange(const Date& startDate, const Date& endDate)
 		p = removedProducts[i];
 		if (p.getRemoveDate() >= startDate && p.getRemoveDate() <= endDate)
 		{
-			std::cout << p << ", " << p.getRemoveDate() << std::endl;
+			std::cout << p << ", removed :" << p.getRemoveDate() << ", comment: " << p.getComment() << std::endl;
 		}
 	}
 }
 
 void Storage::clean()
 {
+	char dateFormat[11];
+	DateTime::currentDateISO8601(dateFormat);
+	bool cleaned = false;
+
 	for (size_t i = 0; i < products.size(); i++)
 	{
-		if (products[i].getExpirationDate() <= CURRENT_DATE.c_str())
+		if (products[i].getExpirationDate() <= dateFormat)
 		{
 			std::cout << "Cleaned product : " << products[i] << std::endl;
-			products[i].setRemoveDate(CURRENT_DATE.c_str());
+			products[i].setRemoveDate(dateFormat);
 			removedProducts.push_back(products[i]);
 			products.erase(products.begin() + i);
 			i--;
+			cleaned = true;
 		}
+	}
+
+	if (!cleaned)
+	{
+		std::cout << "There are no products which are about to expire" << std::endl;
 	}
 }
 

@@ -4,20 +4,21 @@
 #include "Product.h"
 #include "Visitor.h"
 #include <iostream>
+#include "InvalidParameterException.h"
 
 Product::Product() : quantity(0), sectionId(0), unitOfMeasurement(Unit::Kilograms) {}
 
 Product::Product(const std::string& _name, const Date& _expirationDate, const Date& _entryDate,
-	const std::string& _manufacturerName, const Unit _unitOfMeasurement,
+	const std::string& _manufacturerName, const std::string& _unitOfMeasurement,
 	const size_t _quantity, const std::string& _comment)
 {
-	name = _name;
-	expirationDate = _expirationDate;
-	entryDate = _entryDate;
-	manufacturerName = _manufacturerName;
-	unitOfMeasurement = _unitOfMeasurement;
-	quantity = _quantity;
-	comment = _comment;
+	setName(_name);
+	setExpirationDate(_expirationDate);
+	setEntryDate(_entryDate);
+	setManufacturerName(_manufacturerName);
+	setUnitOfMeasuremnet(_unitOfMeasurement);
+	setQuantity(_quantity);
+	setComment(_comment);
 }
 
 Product& Product::operator=(const Product& other)
@@ -82,11 +83,21 @@ const Unit Product::getUnitOfMeasurement() const
 
 void Product::setName(const std::string& _name)
 {
+	if (_name.size() < 2)
+	{
+		throw InvalidParameterException("Invalid product name! Product name should be at least 2 symbols long");
+	}
+
 	name = _name;
 }
 
 void Product::setManufacturerName(const std::string& _manufacturerName)
 {
+	if (_manufacturerName.size() < 3)
+	{
+		throw InvalidParameterException("Invalid manufacturer name! Manufacturer name should be at least 3 symbols long");
+	}
+
 	manufacturerName = _manufacturerName;
 }
 
@@ -105,9 +116,20 @@ void Product::setEntryDate(const Date& _entryDate)
 	entryDate = _entryDate;
 }
 
-void Product::setUnitOfMeasuremnet(const Unit& _unitOfMeasurement)
+void Product::setUnitOfMeasuremnet(const std::string& _unitOfMeasurement)
 {
-	unitOfMeasurement = _unitOfMeasurement;
+	if (_unitOfMeasurement == "kg")
+	{
+		unitOfMeasurement = Unit::Kilograms;
+	}
+	else if (_unitOfMeasurement == "l")
+	{
+		unitOfMeasurement = Unit::Liters;
+	}
+	else
+	{
+		throw InvalidParameterException("Invalid unit of measurement! Supported units are <kg> and <l>");
+	}
 }
 
 void Product::setSectionId(const size_t _sectionId)
@@ -132,7 +154,7 @@ void Product::reduceQuantity(const size_t amount)
 
 bool Product::operator < (const Product& other) const
 {
-	return expirationDate > other.expirationDate;
+	return expirationDate < other.expirationDate;
 }
 
 bool Product::operator==(const Product& other) const
@@ -159,7 +181,20 @@ void Product::copyValues(const Product& other)
 
 std::ostream& operator<<(std::ostream& out, const Product& p)
 {
-	out << p.getName() << " \"" << p.getManufacturerName() << "\" - " << p.getQuantity();
+	Unit unitOfMeasurement = p.getUnitOfMeasurement();
+	std::string unit;
+	if (unitOfMeasurement == Unit::Kilograms)
+	{
+		unit = "kg";
+	}
+	else if (unitOfMeasurement == Unit::Liters)
+	{
+		unit = "l";
+	}
+
+	out << p.getName() << " \"" << p.getManufacturerName() << "\" - "
+		<< p.getQuantity() << unit << " section: #" << p.getSectionId()
+		<< ", expires: " << p.getExpirationDate();
 	return out;
 }
 
