@@ -5,7 +5,8 @@
 
 class Gold : public Metal
 {
-
+public:
+	Gold(const size_t _amount);
 };
 
 #endif

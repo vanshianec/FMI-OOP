@@ -5,7 +5,8 @@
 
 class Spirit : public Air
 {
-
+public:
+	Spirit(const size_t _amount);
 };
 
 #endif

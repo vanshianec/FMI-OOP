@@ -3,6 +3,17 @@
 
 #include "Element.h"
 
-Element::Element(const size_t _amount) : amount(_amount) {}
+Element::Element(const size_t _amount, const std::string& _type) : amount(_amount), type(_type) {}
+
+
+const std::string& Element::getType() const
+{
+	return type;
+}
+
+const size_t Element::getAmount() const
+{
+	return amount;
+}
 
 #endif

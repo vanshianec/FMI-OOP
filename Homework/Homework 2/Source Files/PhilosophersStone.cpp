@@ -3,6 +3,8 @@
 
 #include "PhilosophersStone.h"
 
-PhilosophersStone::PhilosophersStone(const size_t _amount) : Element(_amount) {}
+PhilosophersStone::PhilosophersStone(const size_t _amount)
+	: Element(_amount, "Philosopher's Stone") {}
+
 
 #endif

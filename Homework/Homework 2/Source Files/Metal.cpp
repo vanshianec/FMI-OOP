@@ -3,6 +3,7 @@
 
 #include "Metal.h"
 
-Metal::Metal(const size_t _amount) : Earth(_amount), Fire(_amount), Element(_amount) {}
+Metal::Metal(const size_t _amount)
+	: Earth(0), Fire(0), PhilosophersStone(0), Element(_amount, "Metal") {}
 
 #endif

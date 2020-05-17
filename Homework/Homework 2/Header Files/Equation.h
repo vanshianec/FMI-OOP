@@ -1,7 +1,9 @@
 #ifndef _EQUATION_H
 #define _EQUATION_H
 
-class Equation
+#include "Formula.h"
+
+class Equation : public Formula
 {
 
 };

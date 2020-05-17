@@ -3,6 +3,7 @@
 
 #include "Gold.h"
 
-Gold::Gold(const size_t _amount) : Metal(_amount), PhilosophersStone(_amount) {}
+Gold::Gold(const size_t _amount)
+	: Metal(0), PhilosophersStone(0), Element(_amount, "Gold") {}
 
 #endif

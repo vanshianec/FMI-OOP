@@ -3,6 +3,7 @@
 
 #include "Water.h"
 
-Water::Water(const size_t _amount) : Element(_amount) {}
+Water::Water(const size_t _amount)
+	: PhilosophersStone(0), Element(_amount, "Water") {}
 
 #endif

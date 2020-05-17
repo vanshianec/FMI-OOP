@@ -5,7 +5,8 @@
 
 class Water : public virtual PhilosophersStone
 {
-
+public:
+	Water(const size_t _amount);
 };
 
 #endif

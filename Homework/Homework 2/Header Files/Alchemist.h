@@ -10,7 +10,9 @@ private:
 	Book book;
 	std::vector<Element*> elements;
 public:
-	bool canCreatePhilosophersStone() const;
+	void setBook(const Book& other);
+
+	//bool canCreatePhilosophersStone() const;
 	void addElement(Element* element);
 };
 

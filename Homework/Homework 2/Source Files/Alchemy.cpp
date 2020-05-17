@@ -1,8 +1,15 @@
 ﻿
 #include <iostream>
 #include <string>
+
+#include "Gold.h"
+#include "Stone.h"
+#include "Energy.h"
+#include "Spirit.h"
+
 #include "Alchemist.h"
 #include "ElementFactory.h"
+#include "FormulaFactory.h"
 
 void readInitialElements(Alchemist& alchemist)
 {
@@ -37,14 +44,22 @@ void readFormulas(Alchemist& alchemist)
 		book.addFormula(FormulaFactory::createFormula(formula));
 		initialQuantities--;
 	}
+
+	alchemist.setBook(book);
 }
 
 
 int main()
 {
-	Alchemist alchemist;
-	readInitialElements(alchemist);
-	readFormulas(alchemist);
+	//Alchemist alchemist;
+	//readInitialElements(alchemist);
+	//readFormulas(alchemist);
+
+	Element* el = new Gold(5);
+	std::cout << el->getType() << std::endl;
+	std::cout << el->getAmount() << std::endl;
+
+	//std::cout << el->getType() << std::endl;
 
 }
 

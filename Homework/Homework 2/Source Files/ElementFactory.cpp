@@ -9,7 +9,7 @@
 
 Element* ElementFactory::createElement(const std::string& type, const size_t amount)
 {
-	if (type == "Philosopher’s Stone")
+	if (type == "Philosopher's Stone")
 	{
 		return new PhilosophersStone(amount);
 	}

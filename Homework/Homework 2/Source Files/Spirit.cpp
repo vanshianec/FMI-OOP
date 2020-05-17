@@ -3,6 +3,7 @@
 
 #include "Spirit.h"
 
-Spirit::Spirit(const size_t _amount) : Air(_amount), PhilosophersStone(_amount) {}
+Spirit::Spirit(const size_t _amount)
+	: Air(0), PhilosophersStone(0), Element(_amount, "Spirit") {}
 
 #endif

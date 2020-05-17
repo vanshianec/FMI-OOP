@@ -3,9 +3,10 @@
 
 #include "Element.h"
 
-class PhilosophersStone : public Element
+class PhilosophersStone : public virtual Element
 {
-
+public:
+	PhilosophersStone(const size_t _amount);
 };
 
 #endif

@@ -6,7 +6,8 @@
 
 class Metal : public Earth, public Fire
 {
-
+public:
+	Metal(const size_t _amount);
 };
 
 #endif
