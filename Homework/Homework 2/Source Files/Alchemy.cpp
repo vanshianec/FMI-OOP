@@ -9,6 +9,7 @@
 
 #include "Alchemist.h"
 #include "ElementFactory.h"
+#include "UserInput.h"
 #include "FormulaFactory.h"
 
 void readInitialElements(Alchemist& alchemist)
@@ -16,8 +17,6 @@ void readInitialElements(Alchemist& alchemist)
 	size_t initialQuantities = 0;
 	std::cout << "Enter initial quantities count: " << std::endl;
 	std::cin >> initialQuantities;
-	std::cout << "Enter " << initialQuantities
-		<< " initial quantities in the format <elementCount> <elementType>\n";
 
 	size_t elementAmount;
 	std::string elementType;
@@ -37,11 +36,11 @@ void readFormulas(Alchemist& alchemist)
 	std::cout << "Enter the number of formulas you want to add: " << std::endl;
 	std::cin >> initialQuantities;
 
-	std::string formula;
 	while (initialQuantities > 0)
 	{
-		std::cin >> formula;
-		book.addFormula(FormulaFactory::createFormula(formula));
+		UserInput input;
+		input.readFormula();
+		book.addFormula(FormulaFactory::createFormula(input.getParameters(), input.getResult()));
 		initialQuantities--;
 	}
 
@@ -51,16 +50,35 @@ void readFormulas(Alchemist& alchemist)
 
 int main()
 {
-	//Alchemist alchemist;
-	//readInitialElements(alchemist);
-	//readFormulas(alchemist);
+	/*
+		-----:Example input:-----
 
-	Element* el = new Gold(5);
-	std::cout << el->getType() << std::endl;
-	std::cout << el->getAmount() << std::endl;
+		4
+		3 Earth
+		4 Fire
+		1 Water
+		10 Air
+		9
+		Air + Air = Spirit
+		Metal + Stone = Gold
+		Fire + Earth = Metal
+		Fire + Water + Earth = Gold
+		Water + Earth = Stone
+		Spirit + Air = Energy
+		Gold + Spirit + Earth = Philosopher's Stone
+		/Fire
+		Energy + Earth = Stone
 
-	//std::cout << el->getType() << std::endl;
+	*/
 
+	/* TODO!!! IMPORTANT!!! DELETE DYNAMMIC MEMORY AND FILTER FOR BASE ELEMNET IN ALCHEMIST CLASS*/
+
+	Alchemist alchemist;
+	readInitialElements(alchemist);
+	readFormulas(alchemist);
+
+	std::cout << "Can create Philosopher's Stone :" << std::endl;
+	std::cout << (alchemist.canCreatePhilosophersStone() == 1 ? "Yes" : "No") << std::endl;
 }
 
 

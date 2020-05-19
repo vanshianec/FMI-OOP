@@ -6,4 +6,26 @@
 Water::Water(const size_t _amount)
 	: PhilosophersStone(0), Element(_amount, "Water") {}
 
+bool Water::reactsWith(Element* other)
+{
+	std::string otherType = other->getType();
+	if (other->isBaseElement())
+	{
+		return (otherType == "Fire" || otherType == "Air");
+	}
+
+	return baseReactsWith(this, other);
+}
+
+const std::vector<Element*> Water::baseElements() const
+{
+	std::vector<Element*> noBaseElements;
+	return noBaseElements;
+}
+
+bool Water::isBaseElement() const
+{
+	return true;
+}
+
 #endif

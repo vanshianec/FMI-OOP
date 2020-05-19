@@ -2,15 +2,18 @@
 #define _BOOK_H
 
 #include <vector>
-#include "Formula.h"
+#include "BaseFormula.h"
 
 class Book
 {
 private:
-	//todo filter in the best way to achieve the creation of the Philosopher's stone
-	std::vector<Formula*> formulas;
+	std::vector<BaseFormula*> formulas;
+	const std::vector<BaseFormula*> sortToAchievePhilosophersStone(BaseFormula* philosophersStoneFormula);
+	BaseFormula* findEquation(Element* result);
+	BaseFormula* findFormula(Element* result);
 public:
-	void addFormula(Formula* formula);
+	void addFormula(BaseFormula* formula);
+	const std::vector<BaseFormula*> filter();
 };
 
 #endif

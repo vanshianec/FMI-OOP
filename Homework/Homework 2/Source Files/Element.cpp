@@ -16,4 +16,9 @@ const size_t Element::getAmount() const
 	return amount;
 }
 
+void Element::setAmount(const size_t _amount)
+{
+	amount = _amount;
+}
+
 #endif

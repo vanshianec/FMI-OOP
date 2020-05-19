@@ -7,6 +7,9 @@ class Gold : public Metal
 {
 public:
 	Gold(const size_t _amount);
+	const std::vector<Element*> baseElements() const;
+	bool isBaseElement() const;
+	bool reactsWith(Element* other);
 };
 
 #endif
