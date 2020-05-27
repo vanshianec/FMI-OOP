@@ -16,17 +16,17 @@ void Alchemist::addElement(Element* element)
 	}
 }
 
-bool Alchemist::removedElement(Element* param)
+bool Alchemist::removedElement(Element* param, std::vector<Element*>& requiredElements)
 {
-	for (size_t i = 0; i < elements.size(); i++)
+	for (size_t i = 0; i < requiredElements.size(); i++)
 	{
-		if (elements[i]->getType() == param->getType())
+		if (requiredElements[i]->getType() == param->getType())
 		{
-			elements[i]->setAmount(elements[i]->getAmount() - param->getAmount());
+			requiredElements[i]->setAmount(requiredElements[i]->getAmount() - param->getAmount());
 
-			if (elements[i]->getAmount() <= 0)
+			if (requiredElements[i]->getAmount() <= 0)
 			{
-				elements.erase(elements.begin() + i);
+				requiredElements.erase(requiredElements.begin() + i);
 			}
 
 			return true;
@@ -38,19 +38,20 @@ bool Alchemist::removedElement(Element* param)
 
 bool Alchemist::canCreatePhilosophersStone()
 {
-	std::vector<BaseFormula*> philosophersStoneFormulas = book.filter();
+	std::vector<Formula*> philosophersStoneFormulas = book.filter();
+	std::vector<Element*> requiredElements = elements;
 
 	if (philosophersStoneFormulas.empty())
 	{
 		return false;
 	}
 
-	for (BaseFormula* formula : philosophersStoneFormulas)
+	for (Formula* formula : philosophersStoneFormulas)
 	{
 		for (Element* param : formula->getParameters())
-		{ 
+		{
 			/* If the alchemist does not have the required element, he can't craft the stone*/
-			if (!removedElement(param))
+			if (!removedElement(param, requiredElements))
 			{
 				return false;
 			}
@@ -58,11 +59,31 @@ bool Alchemist::canCreatePhilosophersStone()
 
 		for (Element* result : formula->getResult())
 		{
-			elements.push_back(result);
+			requiredElements.push_back(result);
+		}
+	}
+
+	for (Formula* f : philosophersStoneFormulas)
+	{
+		if (f->getParameters().size() > 0 && f->getResult().size() > 0)
+		{
+			delete f;
 		}
 	}
 
 	return true;
+}
+
+Alchemist::~Alchemist()
+{
+	for (Element* el : elements)
+	{
+		if (el != nullptr)
+		{
+			delete el;
+			el = nullptr;
+		}
+	}
 }
 
 #endif

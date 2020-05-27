@@ -2,18 +2,18 @@
 #define _BOOK_H
 
 #include <vector>
-#include "BaseFormula.h"
+#include "Formula.h"
 
 class Book
 {
 private:
-	std::vector<BaseFormula*> formulas;
-	const std::vector<BaseFormula*> sortToAchievePhilosophersStone(BaseFormula* philosophersStoneFormula);
-	BaseFormula* findEquation(Element* result);
-	BaseFormula* findFormula(Element* result);
+	std::vector<Formula*> formulas;
+	const std::vector<Formula*> sortToAchievePhilosophersStone(Formula* philosophersStoneFormula);
+	Formula* findEquation(Element* result);
+	Formula* findFormula(Element* result);
 public:
-	void addFormula(BaseFormula* formula);
-	const std::vector<BaseFormula*> filter();
+	void addFormula(Formula* formula);
+	const std::vector<Formula*> filter();
 };
 
 #endif

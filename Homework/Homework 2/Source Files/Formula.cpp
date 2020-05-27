@@ -3,15 +3,54 @@
 
 #include "Formula.h"
 
-Formula::Formula(const std::vector<Element*>& _parameters, const std::vector<Element*>& _result)
-	: BaseFormula(_parameters, _result, "Formula") {}
+Formula::Formula(const std::vector<Element*>& _parameters, const std::vector<Element*>& _result
+	, const std::string& _type) : parameters(_parameters), result(_result), type(_type), used(false) {}
 
-bool Formula::isValid() const
+
+const std::vector<Element*>& Formula::getResult() const
 {
-	std::string type = getParameters()[0]->getType();
-	return type == "Philosopher's Stone" || type == "Fire" || type == "Water"
-		|| type == "Earth" || type == "Air" || type == "Spirit" || type == "Metal"
-		|| type == "Stone" || type == "Energy" || type == "Gold";
+	return result;
+}
+
+const std::vector<Element*>& Formula::getParameters() const
+{
+	return parameters;
+}
+
+const std::string& Formula::getType() const
+{
+	return type;
+}
+
+bool Formula::isUsed() const
+{
+	return used;
+}
+
+void Formula::setUsed(bool _used)
+{
+	used = _used;
+}
+
+Formula::~Formula()
+{
+	for (Element* el : parameters)
+	{
+		if (el != nullptr)
+		{
+			delete el;
+			el = nullptr;
+		}
+	}
+
+	for (Element* el : result)
+	{
+		if (el != nullptr)
+		{
+			delete el;
+			el = nullptr;
+		}
+	}
 }
 
 #endif

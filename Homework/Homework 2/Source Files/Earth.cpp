@@ -19,8 +19,7 @@ bool Earth::reactsWith(Element* other)
 
 const std::vector<Element*> Earth::composingElements() const
 {
-	std::vector<Element*> noComposingElements;
-	return noComposingElements;
+	return std::vector<Element*>();
 }
 
 bool Earth::isBaseElement() const

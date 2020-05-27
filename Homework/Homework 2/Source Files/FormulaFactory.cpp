@@ -2,15 +2,15 @@
 #define _FORMULAFACTORY_CPP
 
 #include "FormulaFactory.h"
-#include "Formula.h"
+#include "ElementDivision.h"
 #include "Equation.h"
 
-BaseFormula* FormulaFactory::createFormula(const std::vector<Element*>& parameters,
+Formula* FormulaFactory::createFormula(const std::vector<Element*>& parameters,
 	const std::vector<Element*>& result)
 {
 	if (parameters.size() == 1 && result.size() == 2)
 	{
-		return new Formula(parameters, result);
+		return new ElementDivision(parameters, result);
 	}
 	else if (result.size() == 1)
 	{

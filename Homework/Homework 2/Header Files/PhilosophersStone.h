@@ -14,6 +14,8 @@ public:
 protected:
 	bool composedReactsWith(Element* _this, Element* other);
 	bool baseReactsWith(Element* _this, Element* other);
+private:
+	void clearData(std::vector<Element*>& data) const;
 };
 
 #endif

@@ -19,6 +19,7 @@ public:
 	virtual bool reactsWith(Element* other) = 0;
 	virtual const std::vector<Element*> baseElements() const = 0;
 	virtual bool isBaseElement() const = 0;
+	virtual ~Element();
 };
 
 #endif

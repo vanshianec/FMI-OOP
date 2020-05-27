@@ -30,16 +30,33 @@ bool PhilosophersStone::composedReactsWith(Element* _this, Element* other)
 	}
 
 	std::vector<Element*> baseElements = _this->baseElements();
+	std::vector<Element*> otherBaseElements = other->baseElements();
+	bool reacts;
 
 	for (Element* baseElement : baseElements)
 	{
-		if (!baseElement->reactsWith(other))
+		reacts = true;
+
+		for (Element* otherBaseElement : otherBaseElements)
 		{
-			return false;
+			if (!baseElement->reactsWith(otherBaseElement))
+			{
+				reacts = false;
+				break;
+			}
+		}
+
+		if (reacts)
+		{
+			clearData(baseElements);
+			clearData(otherBaseElements);
+			return true;
 		}
 	}
 
-	return true;
+	clearData(baseElements);
+	clearData(otherBaseElements);
+	return false;
 }
 
 bool PhilosophersStone::baseReactsWith(Element* _this, Element* other)
@@ -50,11 +67,21 @@ bool PhilosophersStone::baseReactsWith(Element* _this, Element* other)
 	{
 		if (!_this->reactsWith(baseElement))
 		{
+			clearData(baseElements);
 			return false;
 		}
 	}
 
+	clearData(baseElements);
 	return true;
+}
+
+void PhilosophersStone::clearData(std::vector<Element*>& data) const
+{
+	for (Element* el : data)
+	{
+		delete el;
+	}
 }
 
 #endif

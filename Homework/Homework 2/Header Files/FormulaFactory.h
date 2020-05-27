@@ -2,12 +2,12 @@
 #define _FORMULAFACTORY_H
 
 #include <string>
-#include "BaseFormula.h"
+#include "Formula.h"
 
 class FormulaFactory
 {
 public:
-	static BaseFormula* createFormula(const std::vector<Element*>& parameters,
+	static Formula* createFormula(const std::vector<Element*>& parameters,
 		const std::vector<Element*>& result);
 };
 

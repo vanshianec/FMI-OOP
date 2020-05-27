@@ -8,7 +8,8 @@ Gold::Gold(const size_t _amount)
 
 bool Gold::reactsWith(Element* other)
 {
-	Element* baseElement = &(Metal(1));
+	Metal metal(1);
+	Element* baseElement = &metal;
 	return composedReactsWith(other, baseElement);
 }
 

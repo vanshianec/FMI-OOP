@@ -19,8 +19,7 @@ bool Fire::reactsWith(Element* other)
 
 const std::vector<Element*> Fire::baseElements() const
 {
-	std::vector<Element*> noBaseElements;
-	return noBaseElements;
+	return std::vector<Element*>();
 }
 
 bool Fire::isBaseElement() const

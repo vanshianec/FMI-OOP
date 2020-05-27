@@ -4,20 +4,24 @@
 #include "Book.h"
 #include "Formula.h"
 
-void Book::addFormula(BaseFormula* formula)
+void Book::addFormula(Formula* formula)
 {
 	/* check if there are valid elements in the formula and that they can make a reaction */
 	if (formula != nullptr && formula->isValid())
 	{
 		formulas.push_back(formula);
 	}
+	else if (formula != nullptr)
+	{
+		delete formula;
+	}
 }
 
-BaseFormula* Book::findFormula(Element* result)
+Formula* Book::findFormula(Element* result)
 {
 	for (size_t i = 0; i < formulas.size(); i++)
 	{
-		BaseFormula* formula = formulas[i];
+		Formula* formula = formulas[i];
 		if (formula->getType() == "Formula")
 		{
 			std::vector<Element*> newResult = formula->getResult();
@@ -34,11 +38,11 @@ BaseFormula* Book::findFormula(Element* result)
 	return nullptr;
 }
 
-BaseFormula* Book::findEquation(Element* result)
+Formula* Book::findEquation(Element* result)
 {
 	std::vector<Element*> formulaResult;
 
-	for (BaseFormula* formula : formulas)
+	for (Formula* formula : formulas)
 	{
 		formulaResult = formula->getResult();
 		if (formula->getType() == "Equation" && formulaResult[0]->getType() == result->getType())
@@ -50,11 +54,11 @@ BaseFormula* Book::findEquation(Element* result)
 	return nullptr;
 }
 
-const std::vector<BaseFormula*> Book::filter()
+const std::vector<Formula*> Book::filter()
 {
-	std::vector<BaseFormula*> noPhilosopherStone;
+	std::vector<Formula*> noPhilosopherStone;
 
-	for (BaseFormula* f : formulas)
+	for (Formula* f : formulas)
 	{
 		std::vector<Element*> formulaResult = f->getResult();
 		for (Element* el : formulaResult)
@@ -69,10 +73,10 @@ const std::vector<BaseFormula*> Book::filter()
 	return noPhilosopherStone;
 }
 
-const std::vector<BaseFormula*> Book::sortToAchievePhilosophersStone(BaseFormula* philosophersStoneFormula)
+const std::vector<Formula*> Book::sortToAchievePhilosophersStone(Formula* philosophersStoneFormula)
 {
 	std::vector<Element*> params = philosophersStoneFormula->getParameters();
-	std::vector<BaseFormula*> formulasForPhilosophersStone;
+	std::vector<Formula*> formulasForPhilosophersStone;
 	formulasForPhilosophersStone.insert(formulasForPhilosophersStone.begin(), philosophersStoneFormula);
 
 	while (params.size() > 0)
@@ -82,7 +86,7 @@ const std::vector<BaseFormula*> Book::sortToAchievePhilosophersStone(BaseFormula
 		if (!nextParam->isBaseElement())
 		{
 			/* Find an equation which can give us the required element */
-			BaseFormula* f = findEquation(nextParam);
+			Formula* f = findEquation(nextParam);
 
 			/* If there is no such equation */
 			if (f == nullptr)
@@ -94,7 +98,7 @@ const std::vector<BaseFormula*> Book::sortToAchievePhilosophersStone(BaseFormula
 			/* If you cannot find a formula then we can't craft the stone */
 			if (f == nullptr)
 			{
-				return std::vector<BaseFormula*>();
+				return std::vector<Formula*>();
 			}
 
 			if ((f->getType() == "Formula" && !f->isUsed()) || f->getType() == "Equation")

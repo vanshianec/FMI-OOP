@@ -19,8 +19,7 @@ bool Air::reactsWith(Element* other)
 
 const std::vector<Element*> Air::baseElements() const
 {
-	std::vector<Element*> noBaseElements;
-	return noBaseElements;
+	return std::vector<Element*>();
 }
 
 bool Air::isBaseElement() const

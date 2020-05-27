@@ -21,4 +21,9 @@ void Element::setAmount(const size_t _amount)
 	amount = _amount;
 }
 
+Element::~Element()
+{
+
+}
+
 #endif

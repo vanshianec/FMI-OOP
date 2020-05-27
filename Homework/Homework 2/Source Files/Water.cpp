@@ -19,8 +19,7 @@ bool Water::reactsWith(Element* other)
 
 const std::vector<Element*> Water::baseElements() const
 {
-	std::vector<Element*> noBaseElements;
-	return noBaseElements;
+	return std::vector<Element*>();
 }
 
 bool Water::isBaseElement() const

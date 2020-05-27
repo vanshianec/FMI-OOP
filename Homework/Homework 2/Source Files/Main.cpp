@@ -58,20 +58,19 @@ int main()
 		4 Fire
 		1 Water
 		10 Air
-		9
+		10
 		Air + Air = Spirit
 		Metal + Stone = Gold
 		Fire + Earth = Metal
 		Fire + Water + Earth = Gold
 		Water + Earth = Stone
 		Spirit + Air = Energy
-		Gold + Spirit + Earth = Philosopher's Stone
+		Water + Air = Energy
+		Gold + Spirit + Energy = Philosopher's Stone
 		/Fire
 		Energy + Earth = Stone
 
 	*/
-
-	/* TODO!!! IMPORTANT!!! DELETE DYNAMMIC MEMORY AND FILTER FOR BASE ELEMNET IN ALCHEMIST CLASS*/
 
 	Alchemist alchemist;
 	readInitialElements(alchemist);
@@ -79,7 +78,10 @@ int main()
 
 	std::cout << "Can create Philosopher's Stone :" << std::endl;
 	std::cout << (alchemist.canCreatePhilosophersStone() == 1 ? "Yes" : "No") << std::endl;
+
+	return 0;
 }
+
 
 
 
