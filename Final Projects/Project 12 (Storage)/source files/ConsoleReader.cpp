@@ -6,6 +6,15 @@
 #include <sstream>
 #include <iostream>
 
+/**
+*   @brief Reads a string and splits it by a character delimeter .
+*
+*   @param delimeter The delimeter used to split the input string.
+*
+*	@return Returns a list of the splitted strings.
+*/
+
+
 const std::vector<std::string> ConsoleReader::readParams(const char delimeter)
 {
 	std::string input;
