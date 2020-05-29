@@ -9,7 +9,15 @@
 #include "ShapeFactory.h"
 #include "FileIOException.h"
 
-void Serializer::proccesShapeStorage(ShapeStorage& storage)
+/**
+*   @brief Saves all shapes in a file.
+*
+*   @param storage  Storage object containing all available shapes which will be saved in the file.
+*
+*	@warning Throws FileIOException if the specified file is not an XML file.
+*/
+
+void Serializer::processShapeStorage(ShapeStorage& storage)
 {
 	pugi::xml_document doc;
 	pugi::xml_node declarationNode = doc.append_child(pugi::node_declaration);

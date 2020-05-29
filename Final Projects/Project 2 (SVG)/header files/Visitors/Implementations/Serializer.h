@@ -3,10 +3,13 @@
 
 #include "FileIO.h"
 
+/// @brief Class used for serializing objects.
+
 class Serializer : public FileIO
 {
 public:
-	void proccesShapeStorage(ShapeStorage&);
+	/// @brief Saves all shapes in a file.
+	void processShapeStorage(ShapeStorage&);
 };
 
 #endif

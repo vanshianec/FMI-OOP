@@ -3,10 +3,13 @@
 
 #include "FileIO.h"
 
+/// @brief Class used for deserializing objects.
+
 class Deserializer : public FileIO
 {
 public:
-	void proccesShapeStorage(ShapeStorage&);
+	/// @brief Loads all shapes from a file.
+	void processShapeStorage(ShapeStorage&);
 };
 
 #endif

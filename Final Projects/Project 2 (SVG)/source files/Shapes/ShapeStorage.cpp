@@ -5,10 +5,26 @@
 #include "ShapeStorage.h"
 #include "FileIO.h"
 
+/**
+*   @brief Executes a file input/ouput operation on the current object.
+*
+*	@param visitor The visitor class which is either a serializer or deserializer.
+*/
+
 void ShapeStorage::accept(FileIO* visitor)
 {
-	visitor->proccesShapeStorage(*this);
+	visitor->processShapeStorage(*this);
 }
+
+/**
+*   @brief Adds a shape object to the storage.
+*
+*	@param shape The shape to be added.
+*	@param shouldPrint Decides wheter or not a message should be printed when a shape is added.
+*
+*	@note If an invalid shape is passed, it will be ignored.
+*/
+
 
 void ShapeStorage::addShape(Shape* shape, bool shouldPrint)
 {
@@ -23,6 +39,12 @@ void ShapeStorage::addShape(Shape* shape, bool shouldPrint)
 	}
 }
 
+/**
+*   @brief Prints all shapes in the storage.
+*
+*	@param printer A visitor class derrived by a printer class which prints shapes.
+*/
+
 void ShapeStorage::printShapes(Visitor* printer)
 {
 	for (size_t i = 0; i < shapes.size(); i++)
@@ -32,6 +54,14 @@ void ShapeStorage::printShapes(Visitor* printer)
 		std::cout << std::endl;
 	}
 }
+
+/**
+*   @brief Erase a shape from the specified index.
+*
+*	@param index The position of the shape in the storage.
+*
+*   @note If an invalid index is passed the user will be notified about his mistake.
+*/
 
 void ShapeStorage::eraseShape(int index)
 {
@@ -46,6 +76,15 @@ void ShapeStorage::eraseShape(int index)
 	std::cout << "Erased a " << shape->getType() << " (" << index + 1 << ")" << std::endl;
 }
 
+/**
+*   @brief Translates the n-th shape.
+*
+*	@param translate A visitor class derived by a translate class which translates shapes.
+*	@param index The position of the shape in the storage to be translated.
+*
+*   @note If an invalid index is passed the user will be notified about his mistake.
+*/
+
 void ShapeStorage::translate(Visitor* translate, int index)
 {
 	if (index < 0 || index >= shapes.size())
@@ -57,6 +96,13 @@ void ShapeStorage::translate(Visitor* translate, int index)
 	shapes[index]->accept(translate);
 	std::cout << "Translated figure : " << shapes[index]->getType() << " (" << index + 1 << ")" << std::endl;
 }
+
+/**
+*   @brief Translates all shapes.
+*
+*	@param translate A visitor class derived by a translate class which translates shapes.
+*
+*/
 
 void ShapeStorage::translate(Visitor* translate)
 {
@@ -73,6 +119,13 @@ void ShapeStorage::translate(Visitor* translate)
 
 	std::cout << "Translated all figures" << std::endl;
 }
+
+/**
+*   @brief Prints all shapes inside a shape.
+*
+*	@param other The shape surface containing all shapes to be printed.
+*	@param printer A visitor class derrived by a printer class which prints shapes.
+*/
 
 void ShapeStorage::printAllInsideShape(Shape* other, Visitor* printer)
 {
@@ -97,6 +150,11 @@ void ShapeStorage::printAllInsideShape(Shape* other, Visitor* printer)
 	}
 }
 
+/**
+*   @brief Deletes all dynamically alocated shapes from the storage.
+*
+*/
+
 void ShapeStorage::clear()
 {
 	for (Shape* shape : shapes)
@@ -111,6 +169,11 @@ const std::vector<Shape*>& ShapeStorage::getShapes() const
 {
 	return shapes;
 }
+
+/**
+*   @brief Removes all shapes from the storage.
+*
+*/
 
 ShapeStorage::~ShapeStorage()
 {

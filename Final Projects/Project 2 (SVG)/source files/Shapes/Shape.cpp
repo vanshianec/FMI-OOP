@@ -50,7 +50,7 @@ bool Shape::contains(Circle&)
 	return false;
 }
 
-bool Shape::contains(Rectangle&)
+bool Shape::contains(Rect&)
 {
 	return false;
 }

@@ -9,7 +9,15 @@
 #include "ShapeFactory.h"
 #include "FileIOException.h"
 
-void Deserializer::proccesShapeStorage(ShapeStorage& storage)
+/**
+*   @brief Loads all shapes from a file.
+*
+*   @param storage  Storage object to store all shapes read from the file.
+*
+*	@warning Throws FileIOException if the specified file is not an XML file.
+*/
+
+void Deserializer::processShapeStorage(ShapeStorage& storage)
 {
 	pugi::xml_document doc;
 	pugi::xml_parse_result result = doc.load_file(FileUtil::path.c_str());

@@ -4,43 +4,18 @@
 #include <iostream>
 #include "ShapeFactory.h"
 #include "Circle.h"
-#include "Rectangle.h"
+#include "Rect.h"
 #include "Line.h"
 #include "StringTrimmer.h"
 
-Shape* ShapeFactory::create(const std::string& type)
-{
-	double x, y;
-	std::string fill;
-	std::cin >> x >> y;
-	if (type == "circle")
-	{
-		double radius;
-		std::cin >> radius;
-		std::getline(std::cin, fill);
-		StringTrimmer::trim(fill);
-		return new Circle(x, y, type, fill, radius);
-	}
-	else if (type == "rectangle")
-	{
-		double width, height;
-		std::cin >> width >> height;
-		std::getline(std::cin, fill);
-		StringTrimmer::trim(fill);
-		return new Rectangle(x, y, type, fill, width, height);
-	}
-	else if (type == "line")
-	{
-		double xEnd, yEnd;
-		std::cin >> xEnd >> yEnd;
-		std::getline(std::cin, fill);
-		StringTrimmer::trim(fill);
-		return new Line(x, y, type, fill, xEnd, yEnd);
-	}
-
-	std::cout << "Invalid shape!" << std::endl;
-	return nullptr;
-}
+/**
+*   @brief Creates a shape object.
+*
+*	@param type The type of shape to be created.
+*	@param params The parameters of the specified shape object.
+*
+*	@return  The newly created shape object or nullptr if the type was invalid.
+*/
 
 Shape* ShapeFactory::create(const std::string& type, const std::vector<std::string>& params)
 {
@@ -54,12 +29,12 @@ Shape* ShapeFactory::create(const std::string& type, const std::vector<std::stri
 		fill = params[3];
 		return new Circle(x, y, type, fill, radius);
 	}
-	else if (type == "rectangle")
+	else if (type == "rect")
 	{
 		double width = std::stoi(params[2]);
 		double height = std::stoi(params[3]);
 		fill = params[4];
-		return new Rectangle(x, y, type, fill, width, height);
+		return new Rect(x, y, type, fill, width, height);
 	}
 	else if (type == "line")
 	{
@@ -71,6 +46,15 @@ Shape* ShapeFactory::create(const std::string& type, const std::vector<std::stri
 
 	return nullptr;
 }
+
+/**
+*   @brief Creates an xml node object.
+*
+*	@param shape The shape to be converted as an xml object.
+*	@param node The xml node to which the newly created shape node will be appended.
+*
+*	@return  The newly created xml node from the shape.
+*/
 
 const pugi::xml_node ShapeFactory::createNode(Shape* shape, pugi::xml_node& node)
 {
@@ -84,8 +68,8 @@ const pugi::xml_node ShapeFactory::createNode(Shape* shape, pugi::xml_node& node
 	}
 	else if (type == "rectangle")
 	{
-		node.append_attribute("width") = ((Rectangle*)shape)->getWidth();
-		node.append_attribute("height") = ((Rectangle*)shape)->getHeight();
+		node.append_attribute("width") = ((Rect*)shape)->getWidth();
+		node.append_attribute("height") = ((Rect*)shape)->getHeight();
 	}
 	else if (type == "line")
 	{

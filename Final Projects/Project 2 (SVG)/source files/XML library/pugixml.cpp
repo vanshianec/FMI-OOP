@@ -1,3 +1,5 @@
+///@brief External helper XML library
+
 /**
  * pugixml parser - version 1.10
  * --------------------------------------------------------

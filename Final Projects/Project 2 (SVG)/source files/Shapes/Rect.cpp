@@ -1,27 +1,51 @@
-#ifndef _RECTANGLE_CPP
-#define _RECTANGLE_CPP
+#ifndef _RECT_CPP
+#define _RECT_CPP
 
-#include "Rectangle.h"
+#include "Rect.h"
+#include "Circle.h"
+#include "Line.h"
 #include "Visitor.h"
 
-Rectangle::Rectangle(const double _x, const double _y, const std::string& _type,
+Rect::Rect(const double _x, const double _y, const std::string& _type,
 	const std::string& _fill, const double _width, const double _height) : Shape(_x, _y, _type, _fill)
 {
 	width = _width;
 	height = _height;
 }
 
-void Rectangle::accept(Visitor* visitor)
+/**
+*   @brief Applies modifications to this object with the help of a visitor object.
+*
+*	@param visitor A visitor object which will modify the current object.
+*/
+
+void Rect::accept(Visitor* visitor)
 {
 	visitor->processRectangle(*this);
 }
 
-bool Rectangle::isInside(Shape* shape)
+/**
+*   @brief Checks if the current object is inside of another shape object.
+*
+*	@param shape A shape object which will check if it contains the current object.
+*
+*   @return Returns true if the current object is inside the other shape object or false otherwise.
+*/
+
+bool Rect::isInside(Shape* shape)
 {
 	return shape->contains(*this);
 }
 
-bool Rectangle::contains(Circle& circle)
+/**
+*   @brief Checks if the current object contains a circle object inside it.
+*
+*	@param circle A circle object to be checked if it is inside the current object.
+*
+*   @return Returns true if the current object contains a circle object or false otherwise.
+*/
+
+bool Rect::contains(Circle& circle)
 {
 	Point mostLeftPoint = this->getLocation();
 	mostLeftPoint.setY(circle.getY());
@@ -41,7 +65,15 @@ bool Rectangle::contains(Circle& circle)
 		&& mostTopPoint.distance(circleCenter) >= radius;
 }
 
-bool Rectangle::contains(Rectangle& other)
+/**
+*   @brief Checks if the current object contains a rectangle object inside it.
+*
+*	@param other A rectangle object to be checked if it is inside the current object.
+*
+*   @return Returns true if the current object class contains a rectangle object or false otherwise.
+*/
+
+bool Rect::contains(Rect& other)
 {
 	Point topLeft = other.getLocation();
 	Point bottomRight = topLeft;
@@ -52,7 +84,15 @@ bool Rectangle::contains(Rectangle& other)
 		&& getY() <= topLeft.getY() && bottomRight.getY() <= getY() + height;
 }
 
-bool Rectangle::contains(Line& line)
+/**
+*   @brief Checks if the current object contains a line object inside it.
+*
+*	@param line A line object to be checked if it is inside the current object.
+*
+*   @return Returns true if the current object class contains a line object or false otherwise.
+*/
+
+bool Rect::contains(Line& line)
 {
 	Point lineStart = line.getLocation();
 	Point lineEnd = line.getEndLocation();
@@ -65,12 +105,12 @@ bool Rectangle::contains(Line& line)
 		&& y <= lineEnd.getY() && lineEnd.getY() <= y + height;
 }
 
-const double Rectangle::getHeight() const
+const double Rect::getHeight() const
 {
 	return height;
 }
 
-const double Rectangle::getWidth() const
+const double Rect::getWidth() const
 {
 	return width;
 }

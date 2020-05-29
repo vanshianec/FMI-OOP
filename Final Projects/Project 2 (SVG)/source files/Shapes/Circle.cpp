@@ -3,6 +3,8 @@
 
 #include <cmath>
 #include "Circle.h"
+#include "Rect.h"
+#include "Line.h"
 #include "Visitor.h"
 
 Circle::Circle(const double _x, const double _y, const std::string& _type,
@@ -11,15 +13,37 @@ Circle::Circle(const double _x, const double _y, const std::string& _type,
 	radius = _radius;
 }
 
+/**
+*   @brief Applies modifications to this object with the help of a visitor object.
+*
+*	@param visitor A visitor object which will modify the current object.
+*/
+
 void Circle::accept(Visitor* visitor)
 {
 	visitor->processCircle(*this);
 }
 
+/**
+*   @brief Checks if the current object is inside of another shape object.
+*
+*	@param shape A shape object which will check if it contains the current object.
+*
+*   @return Returns true if the current object is inside the other shape object or false otherwise.
+*/
+
 bool Circle::isInside(Shape* shape)
 {
 	return shape->contains(*this);
 }
+
+/**
+*   @brief Checks if the current object contains a circle object inside it.
+*
+*	@param other A circle object to be checked if it is inside the current object.
+*
+*   @return Returns true if the current object class contains a circle object or false otherwise.
+*/
 
 bool Circle::contains(Circle& other)
 {
@@ -28,15 +52,23 @@ bool Circle::contains(Circle& other)
 	return radius >= other.getRadius() + distance;
 }
 
-bool Circle::contains(Rectangle& rectangle)
+/**
+*   @brief Checks if the current object contains a rectangle object inside it.
+*
+*	@param rect A rectangle object to be checked if it is inside the current object.
+*
+*   @return Returns true if the current object class contains a rectangle object or false otherwise.
+*/
+
+bool Circle::contains(Rect& rect)
 {
-	Point topLeft = rectangle.getLocation();
+	Point topLeft = rect.getLocation();
 	Point bottomLeft = topLeft;
-	bottomLeft.setY(topLeft.getY() + rectangle.getHeight());
+	bottomLeft.setY(topLeft.getY() + rect.getHeight());
 	Point bottomRight = bottomLeft;
-	bottomRight.setX(bottomLeft.getX() + rectangle.getWidth());
+	bottomRight.setX(bottomLeft.getX() + rect.getWidth());
 	Point topRight = topLeft;
-	topRight.setX(topLeft.getX() + rectangle.getWidth());
+	topRight.setX(topLeft.getX() + rect.getWidth());
 	Point circleCenter = this->getLocation();
 
 	return bottomLeft.distance(circleCenter) <= radius
@@ -44,6 +76,14 @@ bool Circle::contains(Rectangle& rectangle)
 		&& topRight.distance(circleCenter) <= radius
 		&& topLeft.distance(circleCenter) <= radius;
 }
+
+/**
+*   @brief Checks if the current object contains a line object inside it.
+*
+*	@param line A line object to be checked if it is inside the current object.
+*
+*   @return Returns true if the current object class contains a line object or false otherwise.
+*/
 
 bool Circle::contains(Line& line)
 {
