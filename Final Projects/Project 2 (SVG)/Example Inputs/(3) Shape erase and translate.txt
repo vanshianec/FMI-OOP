@@ -1,0 +1,13 @@
+open figures.svg
+print
+erase 2
+erase 100
+print
+translate 100 10
+print
+translate 10 30 3
+translate 999 900 1
+translate 100 100 10
+print
+save
+close

@@ -67,7 +67,7 @@ void ShapeStorage::eraseShape(int index)
 {
 	if (index < 0 || index >= shapes.size())
 	{
-		std::cout << "There is no figure number " << index << "!" << std::endl;
+		std::cout << "There is no figure number " << index + 1 << "!" << std::endl;
 		return;
 	}
 

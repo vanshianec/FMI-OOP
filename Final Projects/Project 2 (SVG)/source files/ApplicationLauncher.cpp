@@ -202,7 +202,7 @@ void ApplicationLauncher::listSupportedCommands()
 	std::cout << "help -> prints supported commands\n";
 	std::cout << "exit -> exits the program\n";
 	std::cout << "create <circle> <x> <y> <radius> <fill> -> creates a circle\n";
-	std::cout << "create <rectangle> <x> <y> <width> <height> <fill> -> creates a rectangle\n";
+	std::cout << "create <rect> <x> <y> <width> <height> <fill> -> creates a rectangle\n";
 	std::cout << "create <line> <x> <y> <xEnd> <yEnd> <fill> -> creates a line\n";
 	std::cout << "print -> prints all shapes\n";
 	std::cout << "erase <n> -> erases the n-th shape\n";
@@ -235,12 +235,24 @@ void ApplicationLauncher::createShape()
 	std::cin >> type;
 	std::cin.ignore();
 	std::vector<std::string> params = ConsoleReader::readParams(' ');
-	Shape* shape = ShapeFactory::create(type, params);
-	if (shape == nullptr)
+	Shape* shape;
+
+	try
 	{
-		std::cout << "Invalid shape!";
+		shape = ShapeFactory::create(type, params);
+	}
+	catch (std::invalid_argument& ex)
+	{
+		std::cout << "Invalid parameters! Type 'help' to see more info about the create command\n";
 		return;
 	}
+
+	if (shape == nullptr)
+	{
+		std::cout << "Invalid shape! Type 'help' to see supported shapes.\n";
+		return;
+	}
+
 	storage.addShape(shape, true);
 }
 
@@ -300,15 +312,24 @@ void ApplicationLauncher::withinSurface()
 		return;
 	}
 
-
 	std::cin.ignore();
 	std::vector<std::string> params = ConsoleReader::readParams(' ');
-	Shape* shape = ShapeFactory::create(type, params);
+	//add last param for shape color since its not required by the user
+	params.push_back("");
+	Shape* shape;
+	try
+	{
+		shape = ShapeFactory::create(type, params);
+	}
+	catch (std::invalid_argument& ex)
+	{
+		std::cout << "Invalid parameters! Type 'help' to see more info about the within command\n";
+		return;
+	}
 
 	if (shape == nullptr)
 	{
-		std::cout << "Invalid shape parameters!\n";
-		delete shape;
+		std::cout << "Invalid shape! Type 'help' to see supported shapes.\n";
 		return;
 	}
 

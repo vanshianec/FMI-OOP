@@ -1,0 +1,7 @@
+open figures.svg
+create rect 5 5 10 10 green
+create circle 5 5 10 blue
+create rect 100 60 10 10 red
+print
+save
+close

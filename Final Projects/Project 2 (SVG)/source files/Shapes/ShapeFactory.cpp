@@ -66,7 +66,7 @@ const pugi::xml_node ShapeFactory::createNode(Shape* shape, pugi::xml_node& node
 	{
 		node.append_attribute("r") = ((Circle*)shape)->getRadius();
 	}
-	else if (type == "rectangle")
+	else if (type == "rect")
 	{
 		node.append_attribute("width") = ((Rect*)shape)->getWidth();
 		node.append_attribute("height") = ((Rect*)shape)->getHeight();

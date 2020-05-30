@@ -1,0 +1,8 @@
+open figures.svg
+print
+create rect 1000 1000 10 20 yellow
+print
+within rect 0 0 30 30
+within circle 0 0 5
+save
+close
