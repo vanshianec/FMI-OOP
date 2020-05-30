@@ -126,13 +126,7 @@ void Storage::addNewProduct(Product& product)
 		added = addToSectionWithEnoughSpace(product);
 	}
 
-	if (added)
-	{
-		std::cout << "Successfully added " << product << std::endl;
-		addedProducts.push_back(product);
-		products.push_back(product);
-	}
-	else
+	if (!added)
 	{
 		std::cout << "There is no space in the sections for this product!\n";
 	}
@@ -259,19 +253,37 @@ void Storage::removeAvailableProducts(size_t& amount, std::vector<Product>& avai
 
 bool Storage::addToSectionWithEnoughSpace(Product& product)
 {
+	bool added = false;
+	size_t sectionAllowedItemsCount;
+	size_t amountToBeAdded;
+
 	for (size_t i = 0; i < sections.size(); i++)
 	{
-		if (sections[i].getItemsCount() + product.getQuantity() <= sections[i].getCapacity()
+		sectionAllowedItemsCount = sections[i].getCapacity() - sections[i].getItemsCount();
+		if (sectionAllowedItemsCount > 0
 			&& !containsSameItem(i, product.getName()))
 		{
-			sections[i].addItemsCount(product.getQuantity());
-			size += product.getQuantity();
-			product.setSectionId(i);
-			return true;
+			Product newProduct = product;
+			amountToBeAdded = std::min(newProduct.getQuantity(), sectionAllowedItemsCount);
+			sections[i].addItemsCount(amountToBeAdded);
+			size += amountToBeAdded;
+			newProduct.setQuantity(amountToBeAdded);
+			newProduct.setSectionId(i);
+			std::cout << "Successfully added " << newProduct << std::endl;
+			addedProducts.push_back(newProduct);
+			products.push_back(newProduct);
+			added = true;
+
+			product.setQuantity(product.getQuantity() - amountToBeAdded);
+
+			if (product.getQuantity() <= 0)
+			{
+				break;
+			}
 		}
 	}
 
-	return false;
+	return added;
 }
 
 /**

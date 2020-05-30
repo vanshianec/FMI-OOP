@@ -259,7 +259,7 @@ std::ostream& operator<<(std::ostream& out, const Product& p)
 	}
 
 	out << p.getName() << " \"" << p.getManufacturerName() << "\" - "
-		<< p.getQuantity() << unit << " section: #" << p.getSectionId()
+		<< p.getQuantity() << unit << " section: #" << p.getSectionId() + 1
 		<< ", expires: " << p.getExpirationDate();
 	return out;
 }

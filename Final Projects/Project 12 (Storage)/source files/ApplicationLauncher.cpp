@@ -215,6 +215,7 @@ void ApplicationLauncher::printAvailableProducts()
 *   @brief Creates a new product specified by the user.
 *
 *	@warning Throws an InvalidParameterException if the product params specified by the user are invalid.
+*
 */
 
 void ApplicationLauncher::addProduct()
@@ -222,14 +223,25 @@ void ApplicationLauncher::addProduct()
 	std::cin.ignore();
 	std::vector<std::string> params = ConsoleReader::readParams(',');
 
+	if (params.size() != 6)
+	{
+		std::cout << "Invalid parameters count! Parameters count should be 6."
+			<< "Type 'help' to see more info about the add command\n";
+		return;
+	}
+
 	try
 	{
 		Product product = ProductFactory::createProduct(params);
 		storage.addNewProduct(product);
 	}
-	catch (InvalidParameterException ex)
+	catch (InvalidParameterException& ex)
 	{
 		std::cout << ex.what() << std::endl;
+	}
+	catch (std::invalid_argument& ex)
+	{
+		std::cout << "Invalid parameters! Type 'help' to see more info about the add command\n";
 	}
 }
 
@@ -268,7 +280,7 @@ void ApplicationLauncher::logStorageChanges()
 		Date endDate(endDateFormat);
 		storage.logChanges(startDate, endDate);
 	}
-	catch (InvalidParameterException ex)
+	catch (InvalidParameterException& ex)
 	{
 		std::cout << ex.what() << std::endl;
 	}
