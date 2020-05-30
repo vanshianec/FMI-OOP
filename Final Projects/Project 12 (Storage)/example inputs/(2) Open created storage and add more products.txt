@@ -1,0 +1,9 @@
+open newStorage.stg
+add Kiselo Mlqko, Vereq, 20, kg, 2020-06-22, This goes in the second section
+print
+add INVALID PRODUCT DATA, jfksd, fjsdl, fdskj ,lfksdj
+print
+add INVALID PRODUCT DATA, jfdsk, fjdsk, fdjs, kla, jfdsk
+print
+save
+close

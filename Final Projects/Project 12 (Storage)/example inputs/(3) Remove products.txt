@@ -1,0 +1,9 @@
+open newStorage.stg
+remove 90 Kiselo Mlqko
+remove 30 Kiselo Mlqko
+print
+clean
+print
+log 2020-01-01 2020-06-25
+save
+close

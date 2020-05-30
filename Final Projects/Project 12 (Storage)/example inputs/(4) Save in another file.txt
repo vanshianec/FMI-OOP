@@ -1,0 +1,13 @@
+open newStorage.stg
+print
+saveas E:\newLocation.stg
+close
+open E:\newLocation.stg
+print
+add Lutenica, Domashna, 50, kg, 2020-06-01, Mnogo vkusna
+save
+open E:\newLocation.stg
+print
+open newStorage.stg
+print
+exit

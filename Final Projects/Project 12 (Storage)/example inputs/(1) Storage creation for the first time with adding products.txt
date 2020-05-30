@@ -1,0 +1,10 @@
+open newStorage.stg
+create 20 50
+add Kiselo Mlqko, Vereq, 20, kg, 2020-06-21, This goes in the first section
+add Kiselo Mlqko, Bojenci, 30, kg, 2020-06-22, This goes in the second section
+print
+add Prqsno Mlqko, Vereq, 20, l, 2020-01-01, This product has expired
+add Prqsno Mlqko, Olympus, 30, l, 2020-06-25, This goes in the second and third section
+print
+save
+close
